@@ -1,24 +1,7 @@
-# clock
+# bay-clock
 
-## Project setup
-```
-npm install
-```
+bay-clock is a website that shows the current schedule and block for the Bay School of SF. 
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+View it Here: [https://fairfieldbw.github.io/clock/](https://fairfieldbw.github.io/clock/)
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Powered by VueJS and Buefy
