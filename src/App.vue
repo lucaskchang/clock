@@ -137,7 +137,7 @@
         return output_schedule
       },
       easterEgg() {
-        this.$buefy.dialog.alert('Easter Egg!')
+        this.$buefy.dialog.alert('Easterdasdasdsa Egg!')
       },
       launchMenu() {
         this.$buefy.dialog.alert('Coming Soon.')
