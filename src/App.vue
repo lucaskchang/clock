@@ -2,10 +2,10 @@
   <div id="body">
     <section class="section" id="top-bar">
       <nav class="level">
-        <div class="level-left">
+        <div class="level-left" v-if="information_bools[0]">
           <h1 class="title is-1">{{ getCurrentTime(time) }}</h1>
         </div>
-        <div class="level-right">
+        <div class="level-right" v-if="information_bools[1]">
           <h1 class="title is-1">{{ getBlock() }}</h1>
         </div>
       </nav>
@@ -13,10 +13,10 @@
 
     <section class="section" id="mid-bar">
       <nav class="level">
-        <div class="level-left">
+        <div class="level-left" v-if="information_bools[2]">
           <h2 class="subtitle is-3" id="date">{{ time.toDateString() }}</h2>
         </div>
-        <div class="level-right" v-if="special_schedule_bool">
+        <div class="level-right" v-if="special_schedule_bool && information_bools[3]">
           <h2 class="subtitle is-3" id="date">SPECIAL SCHEDULE</h2>
         </div>
       </nav>
@@ -24,13 +24,13 @@
 
     <div id="block-container" v-if="time.getDay() != 0 && time.getDay() != 6">
       <section class="section block" v-for="(value, key) in getDayDict()" :key="key">
-        <b-progress :value="getProgress(value)" size="is-large" type="is-success" show-value>
+        <b-progress :value="getProgress(value)" size="is-large" :type="progress_color" show-value>
           <nav class="level is-mobile">
             <div class="level-left">
-              <h5 class="subtitle is-5 level-item">{{ getName(key) }}</h5>
+              <p class="level-item">{{ getName(key) }}</p>
             </div>
             <div class="level-right">
-              <p class="level-item" style="float:left">{{ getTime(value[0]) + " - " + getTime(value[1]) }}</p>
+              <p class="level-item">{{ getTime(value[0]) + " - " + getTime(value[1]) }}</p>
             </div>
           </nav>
         </b-progress>
@@ -41,19 +41,22 @@
       <nav class="level is-mobile">
         <div class="level-left">
           <div class="level-item">
-            <b-button type="is-info" tag="a" href="https://www.bayschoolsf.org/" target="_blank">Bay Site</b-button>
+            <b-button :type="button_colors[0]" tag="a" href="https://www.bayschoolsf.org/" target="_blank">Bay Site</b-button>
           </div>
           <div class="level-item">
-            <b-button label="Lunch Menu" type="is-warning" @click="launchMenu" />
+            <b-button label="Lunch Menu" :type="button_colors[1]" @click="launchMenu" />
           </div>
           <div class="level-item">
-            <b-button label="Reschedule" type="is-danger" @click="isRescheduleModalActive = true" />
+            <b-button label="Custom Schedule" :type="button_colors[2]" @click="isRescheduleModalActive = true" />
+          </div>
+          <div class="level-item">
+            <b-button label="Customize" :type="button_colors[3]" @click="isCustomizeModalActive = true" />
           </div>
         </div>
       </nav>
     </section>
 
-    <b-modal v-model="isRescheduleModalActive">
+    <b-modal v-model="isRescheduleModalActive" can-cancel="['escape', 'outside']">
       <form>
         <div class="modal-card" style="width: auto">
           <header class="modal-card-head">
@@ -88,9 +91,106 @@
       </form>
     </b-modal>
 
+    <b-modal v-model="isCustomizeModalActive" can-cancel="['escape', 'outside']">
+      <form>
+        <div class="modal-card" style="width: auto">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Customize</p>
+            <button type="button" class="delete" @click="isCustomizeModalActive = false"/>
+          </header>
+          <section class="modal-card-body">
+            <h4 class="subtitle is-4">Information</h4>
+            <nav class="level is-mobile">
+              <div class="level-left">
+                <div class="level-item">
+                  <b-field>
+                    <b-checkbox v-model="information_bools[0]">
+                      Clock
+                    </b-checkbox>
+                  </b-field>
+                </div>
+                <div class="level-item">
+                  <b-field>
+                    <b-checkbox v-model="information_bools[1]">
+                      Block Indicator
+                    </b-checkbox>
+                  </b-field>
+                </div>
+                <div class="level-item">
+                  <b-field>
+                    <b-checkbox v-model="information_bools[2]">
+                      Date
+                    </b-checkbox>
+                  </b-field>
+                </div>
+                <div class="level-item">
+                  <b-field>
+                    <b-checkbox v-model="information_bools[3]">
+                      Special Schedule Indicator
+                    </b-checkbox>
+                  </b-field>
+                </div>
+              </div>
+            </nav>
+
+            <h4 class="subtitle is-4">Progress Bar</h4>
+            <nav class="level is-mobile">
+              <div class="level-left">
+                <div class="level-item">
+                  <b-field label="Color">
+                    <b-select placeholder="Select a color" v-model="progress_color">
+                      <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                    </b-select>
+                  </b-field>
+                </div>
+              </div>
+            </nav>
+
+            <h4 class="subtitle is-4">Buttons</h4>
+            <nav class="level is-mobile">
+              <div class="level-left">
+                <div class="level-item">
+                  <b-field label="Bay Site">
+                    <b-select placeholder="Select a color" v-model="button_colors[0]">
+                      <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                    </b-select>
+                  </b-field>
+                </div>
+                <div class="level-item">
+                  <b-field label="Lunch Menu">
+                    <b-select placeholder="Select a color" v-model="button_colors[1]">
+                      <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                    </b-select>
+                  </b-field>
+                </div>
+                <div class="level-item">
+                  <b-field label="Custom Schedule">
+                    <b-select placeholder="Select a color" v-model="button_colors[2]">
+                      <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                    </b-select>
+                  </b-field>
+                </div>
+                <div class="level-item">
+                  <b-field label="Customize">
+                    <b-select placeholder="Select a color" v-model="button_colors[3]">
+                      <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                    </b-select>
+                  </b-field>
+                </div>
+              </div>
+            </nav>
+          </section>
+          <footer class="modal-card-foot">
+            <b-button label="Close" @click="isCustomizeModalActive = false"/>
+            <b-button label="Save" type="is-primary" @click="saveCustomizations"/>
+          </footer>
+        </div>
+      </form>
+    </b-modal>
+
     <footer class="footer">
       <div class="content has-text-centered">
-        <p><a id="easter-egg" @click="easterEgg">Coded</a> by <a href="https://github.com/FairfieldBW" target="_blank">Lucas Chang</a>. Updated on 9/30/21.</p>
+        <p><a id="easter-egg" @click="easterEgg">Coded</a> by <a href="https://github.com/FairfieldBW" target="_blank">Lucas Chang</a>. Updated on 10/01/21.</p>
         <p>Found a Bug? Email: lchang24@bayschoolsf.org</p>
       </div>
     </footer>
@@ -107,14 +207,25 @@
         schedule: scheduleData,
         special_schedule: specialScheduleData,
         special_schedule_bool: false,
+        information_bools: [true, true, true, true],
         now: new Date(),
         time: new Date(),
         isRescheduleModalActive: false,
+        isCustomizeModalActive: false,
         blocks_index: ["A", "B", "C", "D", "E", "F"],
-        blocks: ["A", "B", "C", "D", "E", "F"]
+        blocks: ["A", "B", "C", "D", "E", "F"],
+        colors: {"White": "is-white", "Black": "is-black", "Light Gray": "is-light", "Dark Gray": "is-dark", "Purple": "is-primary", "Blue": "is-info", "Green": "is-success", "Yellow": "is-warning", "Red": "is-danger"},
+        progress_color: "is-success",
+        button_colors: ["is-info", "is-warning", "is-danger", "is-primary"],
       }
     },
     methods: {
+      saveCustomizations() {
+        var customizations = {"information_bools": this.information_bools, "progress_color": this.progress_color, "button_colors": this.button_colors}
+        const parsed = JSON.stringify(customizations);
+        localStorage.setItem('customizations', parsed);
+        this.isCustomizeModalActive = false;
+      },
       getName(key) {
         if (this.blocks_index.indexOf(key) != -1) {
           return this.blocks[this.blocks_index.indexOf(key)]
@@ -137,7 +248,7 @@
         return output_schedule
       },
       easterEgg() {
-        this.$buefy.dialog.alert('Easterdasdasdsa Egg!')
+        this.$buefy.dialog.alert('Coded this for so long that my eye started twitching!')
       },
       launchMenu() {
         this.$buefy.dialog.alert('Coming Soon.')
@@ -235,6 +346,16 @@
           this.blocks = JSON.parse(localStorage.getItem('blocks'));
         } catch(e) {
           localStorage.removeItem('blocks');
+        }
+      }
+      if (localStorage.getItem('customizations')) {
+        try {
+          var customizations = JSON.parse(localStorage.getItem('customizations'));
+          this.information_bools = customizations["information_bools"];
+          this.progress_color = customizations["progress_color"];
+          this.button_colors = customizations["button_colors"];
+        } catch(e) {
+          localStorage.removeItem('customizations');
         }
       }
     }

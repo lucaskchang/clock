@@ -28,20 +28,6 @@
   width: 100%;
 }
 
-#clock {
-  float: left;
-  margin: 0;
-}
-
-#block {
-  float: right;
-  right: 0;
-}
-
-.progress-label {
-  width: 100%;
-}
-
 .progress-value {
   width: 99%;
 }
