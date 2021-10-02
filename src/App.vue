@@ -38,13 +38,13 @@
     </div>
 
     <section class="section">
-      <nav class="level is-mobile">
+      <nav class="level">
         <div class="level-left">
           <div class="level-item">
             <b-button :type="button_colors[0]" tag="a" href="https://www.bayschoolsf.org/" target="_blank">Bay Site</b-button>
           </div>
           <div class="level-item">
-            <b-button label="Lunch Menu" :type="button_colors[1]" @click="launchMenu" />
+            <b-button label="Lunch Menu" :type="button_colors[1]" @click="isLunchModalActive = true" />
           </div>
           <div class="level-item">
             <b-button label="Custom Schedule" :type="button_colors[2]" @click="isRescheduleModalActive = true" />
@@ -56,141 +56,146 @@
       </nav>
     </section>
 
+    <b-modal v-model="isLunchModalActive">
+      <p class="image">
+        <img src="./data/menu/1.jpg">
+      </p>
+      <p class="image">
+        <img src="./data/menu/2.jpg">
+      </p>
+    </b-modal>
+
     <b-modal v-model="isRescheduleModalActive" can-cancel="['escape', 'outside']">
-      <form>
-        <div class="modal-card" style="width: auto">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Custom Schedule</p>
-            <button type="button" class="delete" @click="isRescheduleModalActive = false"/>
-          </header>
-          <section class="modal-card-body">
-            <b-field label="A Block:">
-              <b-input v-model="blocks[0]"></b-input>
-            </b-field>
-            <b-field label="B Block:">
-              <b-input v-model="blocks[1]"></b-input>
-            </b-field>
-            <b-field label="C Block:">
-              <b-input v-model="blocks[2]"></b-input>
-            </b-field>
-            <b-field label="D Block:">
-              <b-input v-model="blocks[3]"></b-input>
-            </b-field>
-            <b-field label="E Block:">
-              <b-input v-model="blocks[4]"></b-input>
-            </b-field>
-            <b-field label="F Block:">
-              <b-input v-model="blocks[5]"></b-input>
-            </b-field>
-          </section>
-          <footer class="modal-card-foot">
-            <b-button label="Close" @click="isRescheduleModalActive = false"/>
-            <b-button label="Save" type="is-primary" @click="saveBlocks"/>
-          </footer>
-        </div>
-      </form>
+      <div class="modal-card" style="width: auto">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Custom Schedule</p>
+          <button type="button" class="delete" @click="isRescheduleModalActive = false"/>
+        </header>
+        <section class="modal-card-body">
+          <b-field label="A Block:">
+            <b-input v-model="blocks[0]"></b-input>
+          </b-field>
+          <b-field label="B Block:">
+            <b-input v-model="blocks[1]"></b-input>
+          </b-field>
+          <b-field label="C Block:">
+            <b-input v-model="blocks[2]"></b-input>
+          </b-field>
+          <b-field label="D Block:">
+            <b-input v-model="blocks[3]"></b-input>
+          </b-field>
+          <b-field label="E Block:">
+            <b-input v-model="blocks[4]"></b-input>
+          </b-field>
+          <b-field label="F Block:">
+            <b-input v-model="blocks[5]"></b-input>
+          </b-field>
+        </section>
+        <footer class="modal-card-foot">
+          <b-button label="Close" @click="isRescheduleModalActive = false"/>
+          <b-button label="Save" type="is-primary" @click="saveBlocks"/>
+        </footer>
+      </div>
     </b-modal>
 
     <b-modal v-model="isCustomizeModalActive" can-cancel="['escape', 'outside']">
-      <form>
-        <div class="modal-card" style="width: auto">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Customize</p>
-            <button type="button" class="delete" @click="isCustomizeModalActive = false"/>
-          </header>
-          <section class="modal-card-body">
-            <h4 class="subtitle is-4">Information</h4>
-            <nav class="level is-mobile">
-              <div class="level-left">
-                <div class="level-item">
-                  <b-field>
-                    <b-checkbox v-model="information_bools[0]">
-                      Clock
-                    </b-checkbox>
-                  </b-field>
-                </div>
-                <div class="level-item">
-                  <b-field>
-                    <b-checkbox v-model="information_bools[1]">
-                      Block Indicator
-                    </b-checkbox>
-                  </b-field>
-                </div>
-                <div class="level-item">
-                  <b-field>
-                    <b-checkbox v-model="information_bools[2]">
-                      Date
-                    </b-checkbox>
-                  </b-field>
-                </div>
-                <div class="level-item">
-                  <b-field>
-                    <b-checkbox v-model="information_bools[3]">
-                      Special Schedule Indicator
-                    </b-checkbox>
-                  </b-field>
-                </div>
+      <div class="modal-card" style="width: auto">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Customize</p>
+          <button type="button" class="delete" @click="isCustomizeModalActive = false"/>
+        </header>
+        <section class="modal-card-body">
+          <h4 class="subtitle is-4">Information</h4>
+          <nav class="level">
+            <div class="level-left">
+              <div class="level-item">
+                <b-field>
+                  <b-checkbox v-model="information_bools[0]">
+                    Clock
+                  </b-checkbox>
+                </b-field>
               </div>
-            </nav>
+              <div class="level-item">
+                <b-field>
+                  <b-checkbox v-model="information_bools[1]">
+                    Block Indicator
+                  </b-checkbox>
+                </b-field>
+              </div>
+              <div class="level-item">
+                <b-field>
+                  <b-checkbox v-model="information_bools[2]">
+                    Date
+                  </b-checkbox>
+                </b-field>
+              </div>
+              <div class="level-item">
+                <b-field>
+                  <b-checkbox v-model="information_bools[3]">
+                    Special Schedule Indicator
+                  </b-checkbox>
+                </b-field>
+              </div>
+            </div>
+          </nav>
 
-            <h4 class="subtitle is-4">Progress Bar</h4>
-            <nav class="level is-mobile">
-              <div class="level-left">
-                <div class="level-item">
-                  <b-field label="Color">
-                    <b-select placeholder="Select a color" v-model="progress_color">
-                      <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
-                    </b-select>
-                  </b-field>
-                </div>
+          <h4 class="subtitle is-4">Progress Bar</h4>
+          <nav class="level">
+            <div class="level-left">
+              <div class="level-item">
+                <b-field label="Color">
+                  <b-select placeholder="Select a color" v-model="progress_color">
+                    <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                  </b-select>
+                </b-field>
               </div>
-            </nav>
+            </div>
+          </nav>
 
-            <h4 class="subtitle is-4">Buttons</h4>
-            <nav class="level is-mobile">
-              <div class="level-left">
-                <div class="level-item">
-                  <b-field label="Bay Site">
-                    <b-select placeholder="Select a color" v-model="button_colors[0]">
-                      <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
-                    </b-select>
-                  </b-field>
-                </div>
-                <div class="level-item">
-                  <b-field label="Lunch Menu">
-                    <b-select placeholder="Select a color" v-model="button_colors[1]">
-                      <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
-                    </b-select>
-                  </b-field>
-                </div>
-                <div class="level-item">
-                  <b-field label="Custom Schedule">
-                    <b-select placeholder="Select a color" v-model="button_colors[2]">
-                      <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
-                    </b-select>
-                  </b-field>
-                </div>
-                <div class="level-item">
-                  <b-field label="Customize">
-                    <b-select placeholder="Select a color" v-model="button_colors[3]">
-                      <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
-                    </b-select>
-                  </b-field>
-                </div>
+          <h4 class="subtitle is-4">Buttons</h4>
+          <nav class="level">
+            <div class="level-left">
+              <div class="level-item">
+                <b-field label="Bay Site">
+                  <b-select placeholder="Select a color" v-model="button_colors[0]">
+                    <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                  </b-select>
+                </b-field>
               </div>
-            </nav>
-          </section>
-          <footer class="modal-card-foot">
-            <b-button label="Close" @click="isCustomizeModalActive = false"/>
-            <b-button label="Save" type="is-primary" @click="saveCustomizations"/>
-          </footer>
-        </div>
-      </form>
+              <div class="level-item">
+                <b-field label="Lunch Menu">
+                  <b-select placeholder="Select a color" v-model="button_colors[1]">
+                    <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                  </b-select>
+                </b-field>
+              </div>
+              <div class="level-item">
+                <b-field label="Custom Schedule">
+                  <b-select placeholder="Select a color" v-model="button_colors[2]">
+                    <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                  </b-select>
+                </b-field>
+              </div>
+              <div class="level-item">
+                <b-field label="Customize">
+                  <b-select placeholder="Select a color" v-model="button_colors[3]">
+                    <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                  </b-select>
+                </b-field>
+              </div>
+            </div>
+          </nav>
+        </section>
+        <footer class="modal-card-foot">
+          <b-button label="Close" @click="isCustomizeModalActive = false"/>
+          <b-button label="Save" type="is-primary" @click="saveCustomizations"/>
+        </footer>
+      </div>
     </b-modal>
 
     <footer class="footer">
       <div class="content has-text-centered">
-        <p><a id="easter-egg" @click="easterEgg">Coded</a> by <a href="https://github.com/FairfieldBW" target="_blank">Lucas Chang</a>. Updated on 10/01/21.</p>
+        <p><a id="easter-egg" @click="easterEgg">Coded</a> by <a href="https://github.com/FairfieldBW" target="_blank">Lucas Chang</a>. Updated on 10/02/21.</p>
         <p>Found a Bug? Email: lchang24@bayschoolsf.org</p>
       </div>
     </footer>
@@ -206,12 +211,13 @@
       return {
         schedule: scheduleData,
         special_schedule: specialScheduleData,
+        isRescheduleModalActive: false,
+        isCustomizeModalActive: false,
+        isLunchModalActive: false,
         special_schedule_bool: false,
         information_bools: [true, true, true, true],
         now: new Date(),
         time: new Date(),
-        isRescheduleModalActive: false,
-        isCustomizeModalActive: false,
         blocks_index: ["A", "B", "C", "D", "E", "F"],
         blocks: ["A", "B", "C", "D", "E", "F"],
         colors: {"White": "is-white", "Black": "is-black", "Light Gray": "is-light", "Dark Gray": "is-dark", "Purple": "is-primary", "Blue": "is-info", "Green": "is-success", "Yellow": "is-warning", "Red": "is-danger"},
@@ -226,16 +232,16 @@
         localStorage.setItem('customizations', parsed);
         this.isCustomizeModalActive = false;
       },
+      saveBlocks() {
+        const parsed = JSON.stringify(this.blocks);
+        localStorage.setItem('blocks', parsed);
+        this.isRescheduleModalActive = false;
+      },
       getName(key) {
         if (this.blocks_index.indexOf(key) != -1) {
           return this.blocks[this.blocks_index.indexOf(key)]
         }
         return key
-      },
-      saveBlocks() {
-        const parsed = JSON.stringify(this.blocks);
-        localStorage.setItem('blocks', parsed);
-        this.isRescheduleModalActive = false;
       },
       loadSchedule(scheduleData) {
         var output_schedule = scheduleData
@@ -249,9 +255,6 @@
       },
       easterEgg() {
         this.$buefy.dialog.alert('Coded this for so long that my eye started twitching!')
-      },
-      launchMenu() {
-        this.$buefy.dialog.alert('Coming Soon.')
       },
       getDayDict() {
         for (const date of Object.keys(this.special_schedule)) {
