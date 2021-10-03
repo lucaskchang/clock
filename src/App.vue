@@ -2,10 +2,10 @@
   <div id="body">
     <section class="section" id="top-bar">
       <nav class="level">
-        <div class="level-left" v-if="information_bools[0]">
+        <div class="level-left" v-if="information_bools['Clock']">
           <h1 class="title is-1">{{ getCurrentTime(time) }}</h1>
         </div>
-        <div class="level-right" v-if="information_bools[1]">
+        <div class="level-right" v-if="information_bools['Block Indicator']">
           <h1 class="title is-1">{{ getBlock() }}</h1>
         </div>
       </nav>
@@ -13,10 +13,10 @@
 
     <section class="section" id="mid-bar">
       <nav class="level">
-        <div class="level-left" v-if="information_bools[2]">
+        <div class="level-left" v-if="information_bools['Date']">
           <h2 class="subtitle is-3" id="date">{{ time.toDateString() }}</h2>
         </div>
-        <div class="level-right" v-if="special_schedule_bool && information_bools[3]">
+        <div class="level-right" v-if="special_schedule_bool && information_bools['Special Schedule Indicator']">
           <h2 class="subtitle is-3" id="date">SPECIAL SCHEDULE</h2>
         </div>
       </nav>
@@ -41,16 +41,16 @@
       <nav class="level">
         <div class="level-left">
           <div class="level-item">
-            <b-button :type="button_colors[0]" tag="a" href="https://www.bayschoolsf.org/" target="_blank">Bay Site</b-button>
+            <b-button :type="button_colors['Bay Site']" tag="a" href="https://www.bayschoolsf.org/" target="_blank">Bay Site</b-button>
           </div>
           <div class="level-item">
-            <b-button label="Lunch Menu" :type="button_colors[1]" @click="isLunchModalActive = true" />
+            <b-button label="Lunch Menu" :type="button_colors['Lunch Menu']" @click="isLunchModalActive = true" />
           </div>
           <div class="level-item">
-            <b-button label="Custom Schedule" :type="button_colors[2]" @click="isRescheduleModalActive = true" />
+            <b-button label="Custom Schedule" :type="button_colors['Custom Schedule']" @click="isRescheduleModalActive = true" />
           </div>
           <div class="level-item">
-            <b-button label="Customize" :type="button_colors[3]" @click="isCustomizeModalActive = true" />
+            <b-button label="Customize" :type="button_colors['Customize']" @click="isCustomizeModalActive = true" />
           </div>
         </div>
       </nav>
@@ -72,23 +72,8 @@
           <button type="button" class="delete" @click="isRescheduleModalActive = false"/>
         </header>
         <section class="modal-card-body">
-          <b-field label="A Block:">
-            <b-input v-model="blocks[0]"></b-input>
-          </b-field>
-          <b-field label="B Block:">
-            <b-input v-model="blocks[1]"></b-input>
-          </b-field>
-          <b-field label="C Block:">
-            <b-input v-model="blocks[2]"></b-input>
-          </b-field>
-          <b-field label="D Block:">
-            <b-input v-model="blocks[3]"></b-input>
-          </b-field>
-          <b-field label="E Block:">
-            <b-input v-model="blocks[4]"></b-input>
-          </b-field>
-          <b-field label="F Block:">
-            <b-input v-model="blocks[5]"></b-input>
+          <b-field v-for="block in Object.keys(blocks)" :key="block" :label="block + ' Block:'">
+            <b-input v-model="blocks[block]"></b-input>
           </b-field>
         </section>
         <footer class="modal-card-foot">
@@ -110,29 +95,8 @@
             <div class="level-left">
               <div class="level-item">
                 <b-field>
-                  <b-checkbox v-model="information_bools[0]">
-                    Clock
-                  </b-checkbox>
-                </b-field>
-              </div>
-              <div class="level-item">
-                <b-field>
-                  <b-checkbox v-model="information_bools[1]">
-                    Block Indicator
-                  </b-checkbox>
-                </b-field>
-              </div>
-              <div class="level-item">
-                <b-field>
-                  <b-checkbox v-model="information_bools[2]">
-                    Date
-                  </b-checkbox>
-                </b-field>
-              </div>
-              <div class="level-item">
-                <b-field>
-                  <b-checkbox v-model="information_bools[3]">
-                    Special Schedule Indicator
+                  <b-checkbox v-for="item in Object.keys(information_bools)" :key="item" v-model="information_bools[item]">
+                    {{ item }}
                   </b-checkbox>
                 </b-field>
               </div>
@@ -145,7 +109,10 @@
               <div class="level-item">
                 <b-field label="Color">
                   <b-select placeholder="Select a color" v-model="progress_color">
+                    <option disabled>Default Colors:</option>
                     <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                    <option disabled>Olympic Team Colors:</option>
+                    <option v-for="(color, name) in olympic_teams" :value="color" :key="color"> {{ name.replace(/^\w/, (c) => c.toUpperCase()) }} </option>
                   </b-select>
                 </b-field>
               </div>
@@ -155,36 +122,32 @@
           <h4 class="subtitle is-4">Buttons</h4>
           <nav class="level">
             <div class="level-left">
-              <div class="level-item">
-                <b-field label="Bay Site">
-                  <b-select placeholder="Select a color" v-model="button_colors[0]">
+              <div v-for="(button_color, button_name) in button_colors" :key="button_color" class="level-item">
+                <b-field :label="button_name">
+                  <b-select placeholder="Select a color" v-model="button_colors[button_name]">
+                    <option disabled>Default Colors:</option>
                     <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
-                  </b-select>
-                </b-field>
-              </div>
-              <div class="level-item">
-                <b-field label="Lunch Menu">
-                  <b-select placeholder="Select a color" v-model="button_colors[1]">
-                    <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
-                  </b-select>
-                </b-field>
-              </div>
-              <div class="level-item">
-                <b-field label="Custom Schedule">
-                  <b-select placeholder="Select a color" v-model="button_colors[2]">
-                    <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
-                  </b-select>
-                </b-field>
-              </div>
-              <div class="level-item">
-                <b-field label="Customize">
-                  <b-select placeholder="Select a color" v-model="button_colors[3]">
-                    <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                    <option disabled>Olympic Team Colors:</option>
+                    <option v-for="(color, name) in olympic_teams" :value="color" :key="color"> {{ name.replace(/^\w/, (c) => c.toUpperCase()) }} </option>
                   </b-select>
                 </b-field>
               </div>
             </div>
           </nav>
+
+          <h4 class="subtitle is-4">Presets</h4>
+          <h5 class="subtitle is-5">Rep your Olympic Team!</h5>
+          <b-field>
+            <b-radio-button v-for="color in Object.keys(olympic_teams)" :key="color" v-model="preset" :native-value="color" :type="'is-'+color+'-team is-light is-outlined'" @click.native.prevent="setPreset(color)">
+              <span>{{ color.replace(/^\w/, (c) => c.toUpperCase()) }}</span>
+            </b-radio-button>
+          </b-field>
+          <h5 class="subtitle is-5">Other</h5>
+          <b-field>
+            <b-radio-button v-for="(value, name) in presets" :key="name" v-model="preset" :native-value="name" :type="'is-'+value['color']+' is-light is-outlined'" @click.native.prevent="setPreset(name)">
+              <span>{{ name }}</span>
+            </b-radio-button>
+          </b-field>
         </section>
         <footer class="modal-card-foot">
           <b-button label="Close" @click="isCustomizeModalActive = false"/>
@@ -205,50 +168,64 @@
 <script type="text/javascript">
   import scheduleData from "./data/schedule.json";
   import specialScheduleData from "./data/special_schedule.json";
+  import presetsData from "./data/presets.json";
 
   export default {
     data() {
       return {
+        time: new Date(),
         schedule: scheduleData,
         special_schedule: specialScheduleData,
+        presets: presetsData,
+        special_schedule_bool: false,
         isRescheduleModalActive: false,
         isCustomizeModalActive: false,
         isLunchModalActive: false,
-        special_schedule_bool: false,
-        information_bools: [true, true, true, true],
-        now: new Date(),
-        time: new Date(),
-        blocks_index: ["A", "B", "C", "D", "E", "F"],
-        blocks: ["A", "B", "C", "D", "E", "F"],
-        colors: {"White": "is-white", "Black": "is-black", "Light Gray": "is-light", "Dark Gray": "is-dark", "Purple": "is-primary", "Blue": "is-info", "Green": "is-success", "Yellow": "is-warning", "Red": "is-danger"},
+        information_bools: {"Clock": true, "Block Indicator": true, "Date": true, "Special Schedule Indicator": true},
+        button_colors: {"Bay Site": "is-info", "Lunch Menu": "is-warning", "Custom Schedule": "is-danger", "Customize": "is-primary"},
+        olympic_teams: {'blue': "is-blue-team", 'crimson': "is-crimson-team", 'orange': "is-orange-team", "gold": "is-gold-team", "green": "is-green-team", "grey": "is-grey-team", "pink": "is-pink-team", "purple": "is-purple-team"},
+        blocks: {"A": "A", "B": "B", "C": "C", "D": "D", "E": "E", "F": "F"},
+        colors: {"White": "is-white", "Black": "is-black", "Light Gray": "is-light", "Dark Gray": "is-dark", "Turquoise": "is-primary", "Blue": "is-info", "Green": "is-success", "Yellow": "is-warning", "Red": "is-danger"},
         progress_color: "is-success",
-        button_colors: ["is-info", "is-warning", "is-danger", "is-primary"],
+        preset: ""
       }
     },
     methods: {
+      setPreset(preset) {
+        this.preset = preset;
+        if (preset in this.olympic_teams) {
+          var color_class = "is-" + preset + "-team"
+          this.progress_color = color_class
+          this.button_colors = {"Bay Site": color_class, "Lunch Menu": color_class, "Custom Schedule": color_class, "Customize": color_class}
+        } else {
+          this.progress_color = this.presets[preset]["progress_color"]
+          this.button_colors = this.presets[preset]["button_colors"]
+        }
+      },
       saveCustomizations() {
         var customizations = {"information_bools": this.information_bools, "progress_color": this.progress_color, "button_colors": this.button_colors}
         const parsed = JSON.stringify(customizations);
-        localStorage.setItem('customizations', parsed);
+        localStorage.setItem('custom_styles', parsed);
         this.isCustomizeModalActive = false;
       },
       saveBlocks() {
         const parsed = JSON.stringify(this.blocks);
-        localStorage.setItem('blocks', parsed);
+        localStorage.setItem('custom_blocks', parsed);
         this.isRescheduleModalActive = false;
       },
       getName(key) {
-        if (this.blocks_index.indexOf(key) != -1) {
-          return this.blocks[this.blocks_index.indexOf(key)]
+        if (key in this.blocks) {
+          return this.blocks[key]
         }
         return key
       },
       loadSchedule(scheduleData) {
-        var output_schedule = scheduleData
+        var output_schedule = scheduleData;
+        var now = this.time;
         for (const block of Object.values(output_schedule)) {
           for (const start_end of Object.values(block)) {
-            start_end[0] = new Date(this.now.getFullYear(), this.now.getMonth(), this.now.getDate(), start_end[0][0], start_end[0][1])
-            start_end[1] = new Date(this.now.getFullYear(), this.now.getMonth(), this.now.getDate(), start_end[1][0], start_end[1][1])
+            start_end[0] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), start_end[0][0], start_end[0][1])
+            start_end[1] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), start_end[1][0], start_end[1][1])
           }        
         }
         return output_schedule
@@ -344,21 +321,21 @@
       setInterval(this.tick, 1000);
     },
     mounted() {
-      if (localStorage.getItem('blocks')) {
+      if (localStorage.getItem('custom_blocks')) {
         try {
-          this.blocks = JSON.parse(localStorage.getItem('blocks'));
+          this.blocks = JSON.parse(localStorage.getItem('custom_blocks'));
         } catch(e) {
-          localStorage.removeItem('blocks');
+          localStorage.removeItem('custom_blocks');
         }
       }
-      if (localStorage.getItem('customizations')) {
+      if (localStorage.getItem('custom_styles')) {
         try {
-          var customizations = JSON.parse(localStorage.getItem('customizations'));
-          this.information_bools = customizations["information_bools"];
-          this.progress_color = customizations["progress_color"];
-          this.button_colors = customizations["button_colors"];
+          var custom_looks = JSON.parse(localStorage.getItem('custom_styles'));
+          this.information_bools = custom_looks["information_bools"];
+          this.progress_color = custom_looks["progress_color"];
+          this.button_colors = custom_looks["button_colors"];
         } catch(e) {
-          localStorage.removeItem('customizations');
+          localStorage.removeItem('custom_styles');
         }
       }
     }

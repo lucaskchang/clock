@@ -1,0 +1,22 @@
+{
+  "Default": {
+  	"color": "primary",
+    "button_colors": {
+      "Bay Site": "is-info",
+      "Lunch Menu": "is-warning",
+      "Custom Schedule": "is-danger",
+      "Customize": "is-primary"
+    },
+    "progress_color": "is-success"
+  },
+  "Monochrome": {
+  	"color": "light",
+    "button_colors": {
+      "Bay Site": "is-black",
+      "Lunch Menu": "is-dark",
+      "Custom Schedule": "is-light",
+      "Customize": "is-white"
+    },
+    "progress_color": "is-light"
+  }
+}

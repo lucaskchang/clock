@@ -1,0 +1,133 @@
+@import url('http://fonts.cdnfonts.com/css/highway-gothic');
+@import "~bulma/sass/utilities/_all";
+
+$blue-team: #004dff;
+$blue-team-invert: findColorInvert($blue-team);
+$crimson-team: #fe0009;
+$crimson-team-invert: findColorInvert($crimson-team);
+$orange-team: #ff8301;
+$orange-team-invert: findColorInvert($orange-team);
+$gold-team: #fff201;
+$gold-team-invert: findColorInvert($gold-team);
+$green-team: #00fa3d;
+$green-team-invert: findColorInvert($green-team);
+$grey-team: #868889;
+$grey-team-invert: findColorInvert($grey-team);
+$pink-team: #fe00fd;
+$pink-team-invert: findColorInvert($pink-team);
+$purple-team: #8601ff;
+$purple-team-invert: findColorInvert($purple-team);
+
+$custom-colors: (
+  "blue-team": ($blue-team, $blue-team-invert),
+  "crimson-team": ($crimson-team, $crimson-team-invert),
+  "orange-team": ($orange-team, $orange-team-invert),
+  "gold-team": ($gold-team, $gold-team-invert),
+  "green-team": ($green-team, $green-team-invert),
+  "grey-team": ($grey-team, $grey-team-invert),
+  "pink-team": ($pink-team, $pink-team-invert),
+  "purple-team": ($purple-team, $purple-team-invert),
+);
+
+$colors: mergeColorMaps(
+  (
+    "white": (
+      $white,
+      $black,
+    ),
+    "black": (
+      $black,
+      $white,
+    ),
+    "light": (
+      $light,
+      $light-invert,
+    ),
+    "dark": (
+      $dark,
+      $dark-invert,
+    ),
+    "primary": (
+      $primary,
+      $primary-invert,
+      $primary-light,
+      $primary-dark,
+    ),
+    "link": (
+      $link,
+      $link-invert,
+      $link-light,
+      $link-dark,
+    ),
+    "info": (
+      $info,
+      $info-invert,
+      $info-light,
+      $info-dark,
+    ),
+    "success": (
+      $success,
+      $success-invert,
+      $success-light,
+      $success-dark,
+    ),
+    "warning": (
+      $warning,
+      $warning-invert,
+      $warning-light,
+      $warning-dark,
+    ),
+    "danger": (
+      $danger,
+      $danger-invert,
+      $danger-light,
+      $danger-dark,
+    ),
+  ),
+  $custom-colors
+);
+
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
+* {
+  font-family: 'Highway Gothic Wide', sans-serif;
+}
+
+#body {
+  margin: 0;
+  padding: 0;
+}
+
+#top-bar {
+  padding: 1rem;
+  padding-bottom: 0rem;
+}
+
+#mid-bar {
+  padding: 1rem;
+  padding-top: 0rem;
+}
+
+
+#block-container {
+  width: 100%;
+}
+
+.progress-value {
+  width: 99%;
+}
+
+.block {
+  padding-top: 1rem;
+  padding-bottom: 0;
+}
+
+#easter-egg {
+  color: rgb(75,75,75);
+  text-decoration: none;
+}
+
+#easter-egg:hover {
+  cursor: initial;
+}
