@@ -10,7 +10,7 @@
     "progress_color": "is-success"
   },
   "Monochrome": {
-  	"color": "light",
+  	"color": "dark",
     "button_colors": {
       "Bay Site": "is-black",
       "Lunch Menu": "is-dark",

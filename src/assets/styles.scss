@@ -1,4 +1,3 @@
-@import url('http://fonts.cdnfonts.com/css/highway-gothic');
 @import "~bulma/sass/utilities/_all";
 
 $blue-team: #004dff;
@@ -89,6 +88,13 @@ $colors: mergeColorMaps(
 
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
+
+@font-face {
+    font-family: 'Highway Gothic Wide';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Highway Gothic Wide'), url('https://fonts.cdnfonts.com/s/8582/HWYGWDE.woff') format('woff');
+}
 
 * {
   font-family: 'Highway Gothic Wide', sans-serif;
