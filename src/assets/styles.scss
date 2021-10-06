@@ -1,5 +1,10 @@
 @import "~bulma/sass/utilities/_all";
 
+$primary: #41B86B;
+$primary-light: findLightColor($primary);
+$primary-dark: findDarkColor($primary);
+$primary-invert: findColorInvert($primary);
+
 $blue-team: #004dff;
 $blue-team-invert: findColorInvert($blue-team);
 $crimson-team: #fe0009;
@@ -25,7 +30,7 @@ $custom-colors: (
   "green-team": ($green-team, $green-team-invert),
   "grey-team": ($grey-team, $grey-team-invert),
   "pink-team": ($pink-team, $pink-team-invert),
-  "purple-team": ($purple-team, $purple-team-invert),
+  "purple-team": ($purple-team, $purple-team-invert)
 );
 
 $colors: mergeColorMaps(
@@ -113,6 +118,10 @@ $colors: mergeColorMaps(
 #mid-bar {
   padding: 1rem;
   padding-top: 0rem;
+}
+
+.subtext {
+  color: #9F9F9F;
 }
 
 

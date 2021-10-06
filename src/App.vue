@@ -3,7 +3,7 @@
     <section class="section" id="top-bar">
       <nav class="level">
         <div class="level-left" v-if="information_bools['Clock']">
-          <h1 class="title is-1">{{ getCurrentTime(time) }}</h1>
+          <h1 class="title is-1">{{ getCurrentTime(time, true) }}</h1>
         </div>
         <div class="level-right" v-if="information_bools['Block Indicator']">
           <h1 class="title is-1">{{ getBlock() }}</h1>
@@ -14,10 +14,10 @@
     <section class="section" id="mid-bar">
       <nav class="level">
         <div class="level-left" v-if="information_bools['Date']">
-          <h2 class="subtitle is-3" id="date">{{ time.toDateString() }}</h2>
+          <h2 class="subtitle is-3 subtext" id="date">{{ time.toDateString() }}</h2>
         </div>
         <div class="level-right" v-if="special_schedule_bool && information_bools['Special Schedule Indicator']">
-          <h2 class="subtitle is-3" id="date">SPECIAL SCHEDULE</h2>
+          <h2 class="subtitle is-3 subtext" id="date">SPECIAL SCHEDULE</h2>
         </div>
       </nav>
     </section>
@@ -41,16 +41,16 @@
       <nav class="level">
         <div class="level-left">
           <div class="level-item">
-            <b-button :type="button_colors['Bay Site']" tag="a" href="https://www.bayschoolsf.org/" target="_blank">Bay Site</b-button>
+            <b-button :type="button_colors['Bay Site']" tag="a" href="https://www.bayschoolsf.org/" target="_blank" rounded>Bay Site</b-button>
           </div>
           <div class="level-item">
-            <b-button label="Lunch Menu" :type="button_colors['Lunch Menu']" @click="isLunchModalActive = true" />
+            <b-button label="Lunch Menu" :type="button_colors['Lunch Menu']" @click="isLunchModalActive = true" rounded/>
           </div>
           <div class="level-item">
-            <b-button label="Custom Schedule" :type="button_colors['Custom Schedule']" @click="isRescheduleModalActive = true" />
+            <b-button label="Custom Schedule" :type="button_colors['Custom Schedule']" @click="isRescheduleModalActive = true" rounded/>
           </div>
           <div class="level-item">
-            <b-button label="Customize" :type="button_colors['Customize']" @click="isCustomizeModalActive = true" />
+            <b-button label="Customize" :type="button_colors['Customize']" @click="isCustomizeModalActive = true" rounded/>
           </div>
         </div>
       </nav>
@@ -110,7 +110,7 @@
                 <b-field label="Color">
                   <b-select placeholder="Select a color" v-model="progress_color">
                     <option disabled>Default Colors:</option>
-                    <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                    <option v-for="(color, name) in bar_possible_colors" :value="color" :key="color"> {{ name }} </option>
                     <option disabled>Olympic Team Colors:</option>
                     <option v-for="(color, name) in olympic_teams" :value="color" :key="color"> {{ name.replace(/^\w/, (c) => c.toUpperCase()) }} </option>
                   </b-select>
@@ -126,7 +126,7 @@
                 <b-field :label="button_name">
                   <b-select placeholder="Select a color" v-model="button_colors[button_name]">
                     <option disabled>Default Colors:</option>
-                    <option v-for="(color, name) in colors" :value="color" :key="color"> {{ name }} </option>
+                    <option v-for="(color, name) in btn_possible_colors" :value="color" :key="color"> {{ name }} </option>
                     <option disabled>Olympic Team Colors:</option>
                     <option v-for="(color, name) in olympic_teams" :value="color" :key="color"> {{ name.replace(/^\w/, (c) => c.toUpperCase()) }} </option>
                   </b-select>
@@ -156,10 +156,31 @@
       </div>
     </b-modal>
 
+    <b-modal v-model="isCreditsModalActive" can-cancel="['escape', 'outside']">
+      <div class="modal-card" style="width: auto">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Credits</p>
+          <button type="button" class="delete" @click="isCreditsModalActive = false"/>
+        </header>
+        <section class="modal-card-body">
+          <p>Bao AiDan: Design Help and the Original Idea</p>
+          <p>Mr. Swag: Design Help</p>
+          <p>Timbo: Moral Support</p>
+          <p>Jay Cob: Design Help?</p>
+          <p>Reed: Read</p>
+          <p>Tim: Getting into an argument and then realizing we were agreeing with him.</p>
+        </section>
+        <footer class="modal-card-foot">
+          <b-button label="Close" @click="isCreditsModalActive = false"/>
+        </footer>
+      </div>
+    </b-modal>
+
     <footer class="footer">
       <div class="content has-text-centered">
-        <p><a id="easter-egg" @click="easterEgg">Coded</a> by <a href="https://github.com/FairfieldBW" target="_blank">Lucas Chang</a>. Updated on 10/02/21.</p>
+        <p><a id="easter-egg" @click="easterEgg">Coded</a> by <a href="https://github.com/FairfieldBW" target="_blank">Lucas Chang</a>.</p>
         <p>Found a Bug? Email: lchang24@bayschoolsf.org</p>
+        <p><a @click="isCreditsModalActive = true">Other Credits</a>.</p>
       </div>
     </footer>
   </div>
@@ -181,11 +202,13 @@
         isRescheduleModalActive: false,
         isCustomizeModalActive: false,
         isLunchModalActive: false,
+        isCreditsModalActive: false,
         information_bools: {"Clock": true, "Block Indicator": true, "Date": true, "Special Schedule Indicator": true},
-        button_colors: {"Bay Site": "is-info", "Lunch Menu": "is-warning", "Custom Schedule": "is-danger", "Customize": "is-primary"},
+        button_colors: {"Bay Site": "", "Lunch Menu": "", "Custom Schedule": "", "Customize": ""},
         olympic_teams: {'blue': "is-blue-team", 'crimson': "is-crimson-team", 'orange': "is-orange-team", "gold": "is-gold-team", "green": "is-green-team", "grey": "is-grey-team", "pink": "is-pink-team", "purple": "is-purple-team"},
         blocks: {"A": "A", "B": "B", "C": "C", "D": "D", "E": "E", "F": "F"},
-        colors: {"White": "is-white", "Black": "is-black", "Light Gray": "is-light", "Dark Gray": "is-dark", "Turquoise": "is-primary", "Blue": "is-info", "Green": "is-success", "Yellow": "is-warning", "Red": "is-danger"},
+        btn_possible_colors: {"Black": "is-black", "Gray": "is-dark", "Green": "is-primary", "Blue": "is-info", "Yellow": "is-warning", "Red": "is-danger", "None": ""},
+        bar_possible_colors: {"Black": "is-black", "Gray": "is-dark", "Green": "is-primary", "Blue": "is-info", "Yellow": "is-warning", "Red": "is-danger"},
         progress_color: "is-success",
         preset: ""
       }
@@ -233,6 +256,12 @@
       easterEgg() {
         this.$buefy.dialog.alert('Coded this for so long that my eye started twitching!')
       },
+      getTimeLeft(time) {
+        var hours = Math.floor(time/3600000)
+        var mins = Math.floor((time%3600000)/60000)
+        var secs = Math.floor(((time%3600000)%60000)/1000)
+        return hours + ":" + mins + ":" + secs
+      },
       getDayDict() {
         for (const date of Object.keys(this.special_schedule)) {
           var date_object = new Date(date);
@@ -248,10 +277,10 @@
       dayDictLength() {
         return Object.keys(this.getDayDict()).length
       },
-      getCurrentTime(time) {
-        let hour = time.getHours();
-        let min = time.getMinutes();
-        let sec = time.getSeconds();
+      getCurrentTime(time, meridiem_bool) {
+        let hour = this.time.getHours();
+        let min = this.time.getMinutes();
+        let sec = this.time.getSeconds();
         var am_pm = "AM";
         if (hour > 11) {
           if (hour != 12){
@@ -262,7 +291,12 @@
         hour = hour < 10 ? "0" + hour : hour;
         min = min < 10 ? "0" + min : min;
         sec = sec < 10 ? "0" + sec : sec;
-        return hour + ":" + min + ":" + sec + am_pm
+        if (meridiem_bool) {
+          return hour + ":" + min + ":" + sec + am_pm
+        }
+        else {
+          return hour + ":" + min + ":" + sec
+        }
       },
       getProgress(block) {
         var block_length = parseInt((block[1] - block[0])/1000)/60
@@ -302,9 +336,10 @@
           return "School is over";
         }
         else {
-          for (const [key, value] of Object.entries(dayDict)) {
+          for (const value of Object.values(dayDict)) {
             if (this.time >= value[0] && this.time < value[1]) {
-              return "Block: " + this.getName(key);
+              var dif = this.getCurrentTime(value[1] - this.time, false)
+              return this.getTimeLeft(dif) + " left"
             }
           }
           return "Block: Passing"

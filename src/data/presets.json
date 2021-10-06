@@ -2,21 +2,21 @@
   "Default": {
   	"color": "primary",
     "button_colors": {
-      "Bay Site": "is-info",
-      "Lunch Menu": "is-warning",
-      "Custom Schedule": "is-danger",
-      "Customize": "is-primary"
+      "Bay Site": "",
+      "Lunch Menu": "",
+      "Custom Schedule": "",
+      "Customize": ""
     },
-    "progress_color": "is-success"
+    "progress_color": "is-primary"
   },
   "Monochrome": {
   	"color": "dark",
     "button_colors": {
-      "Bay Site": "is-black",
+      "Bay Site": "is-dark",
       "Lunch Menu": "is-dark",
-      "Custom Schedule": "is-light",
-      "Customize": "is-white"
+      "Custom Schedule": "is-dark",
+      "Customize": "is-dark"
     },
-    "progress_color": "is-light"
+    "progress_color": "is-dark"
   }
 }
