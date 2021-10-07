@@ -338,7 +338,7 @@
         else {
           for (const value of Object.values(dayDict)) {
             if (this.time >= value[0] && this.time < value[1]) {
-              var dif = this.getCurrentTime(value[1] - this.time, false)
+              var dif = value[1] - this.time
               return this.getTimeLeft(dif) + " left"
             }
           }
