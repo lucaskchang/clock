@@ -1,16 +1,18 @@
 <template>
   <div id="body">
+    <!-- Clock and Time Left in Block -->
     <section class="section" id="top-bar">
       <nav class="level">
         <div class="level-left" v-if="information_bools['Clock']">
           <h1 class="title is-1">{{ getCurrentTime(time, true) }}</h1>
         </div>
-        <div class="level-right" v-if="information_bools['Block Indicator']">
+        <div class="level-right" v-if="information_bools['Time Left']">
           <h1 class="title is-1">{{ getBlock() }}</h1>
         </div>
       </nav>
     </section>
 
+    <!-- Date and Special Schedule Indicator -->
     <section class="section" id="mid-bar">
       <nav class="level">
         <div class="level-left" v-if="information_bools['Date']">
@@ -22,7 +24,8 @@
       </nav>
     </section>
 
-    <div id="block-container" v-if="time.getDay() != 0 && time.getDay() != 6">
+    <!-- Container for Blocks -->
+    <div id="block-container" v-if="show_schedule">
       <section class="section block" v-for="(value, key) in getDayDict()" :key="key">
         <b-progress :value="getProgress(value)" size="is-large" :type="progress_color" show-value>
           <nav class="level is-mobile">
@@ -37,11 +40,25 @@
       </section>
     </div>
 
+    <!-- Useful Links Dropdown + Buttons to Toggle Modals -->
     <section class="section">
       <nav class="level">
         <div class="level-left">
           <div class="level-item">
-            <b-button :type="button_colors['Bay Site']" tag="a" href="https://www.bayschoolsf.org/" target="_blank" rounded>Bay Site</b-button>
+            <b-dropdown aria-role="list">
+              <template #trigger="{ active }">
+                <b-button
+                  label="Useful Links"
+                  :type="button_colors['Useful Links']"
+                  :icon-right="active ? 'menu-up' : 'menu-down'" 
+                  rounded
+                  />
+              </template>
+
+              <b-dropdown-item has-link aria-role="listitem"><a href="https://www.bayschoolsf.org/" target="_blank">Bay Site</a></b-dropdown-item>
+              <b-dropdown-item has-link aria-role="listitem"><a href="https://bayschoolsf.instructure.com/" target="_blank">Canvas</a></b-dropdown-item>
+              <b-dropdown-item has-link aria-role="listitem"><a href="https://bayschoolsf.myschoolapp.com/" target="_blank">My Bay</a></b-dropdown-item>
+            </b-dropdown>
           </div>
           <div class="level-item">
             <b-button label="Lunch Menu" :type="button_colors['Lunch Menu']" @click="isLunchModalActive = true" rounded/>
@@ -56,15 +73,14 @@
       </nav>
     </section>
 
+    <!-- Lunch Menu Modal -->
     <b-modal v-model="isLunchModalActive">
-      <p class="image">
-        <img src="./data/menu/1.jpg">
-      </p>
-      <p class="image">
-        <img src="./data/menu/2.jpg">
+      <p v-for="index in menu_length" :key="index" class="image">
+        <img :src="require('./data/menu/' + index + '.jpg')">
       </p>
     </b-modal>
 
+    <!-- Reschedule Modal for Custom Blocks -->
     <b-modal v-model="isRescheduleModalActive" can-cancel="['escape', 'outside']">
       <div class="modal-card" style="width: auto">
         <header class="modal-card-head">
@@ -83,6 +99,7 @@
       </div>
     </b-modal>
 
+    <!-- Customizable Styles Modal -->
     <b-modal v-model="isCustomizeModalActive" can-cancel="['escape', 'outside']">
       <div class="modal-card" style="width: auto">
         <header class="modal-card-head">
@@ -91,11 +108,24 @@
         </header>
         <section class="modal-card-body">
           <h4 class="subtitle is-4">Information</h4>
+          <h5 class="subtitle is-5">Toggles</h5>
           <nav class="level">
             <div class="level-left">
               <div class="level-item">
                 <b-field>
                   <b-checkbox v-for="item in Object.keys(information_bools)" :key="item" v-model="information_bools[item]">
+                    {{ item }}
+                  </b-checkbox>
+                </b-field>
+              </div>
+            </div>
+          </nav>
+          <h5 class="subtitle is-5">Other Options</h5>
+          <nav class="level">
+            <div class="level-left">
+              <div class="level-item">
+                <b-field>
+                  <b-checkbox v-for="item in Object.keys(other_options)" :key="item" v-model="other_options[item]">
                     {{ item }}
                   </b-checkbox>
                 </b-field>
@@ -156,6 +186,7 @@
       </div>
     </b-modal>
 
+    <!-- Credits Modal -->
     <b-modal v-model="isCreditsModalActive" can-cancel="['escape', 'outside']">
       <div class="modal-card" style="width: auto">
         <header class="modal-card-head">
@@ -166,7 +197,7 @@
           <p>Bao AiDan: Design Help and the Original Idea</p>
           <p>Mr. Swag: Design Help</p>
           <p>Timbo: Moral Support</p>
-          <p>Jay Cob: Design Help?</p>
+          <p>Jay Cob:</p>
           <p>Reed: Read</p>
           <p>Tim: Getting into an argument and then realizing we were agreeing with him.</p>
         </section>
@@ -176,9 +207,10 @@
       </div>
     </b-modal>
 
+    <!-- Footer -->
     <footer class="footer">
       <div class="content has-text-centered">
-        <p><a id="easter-egg" @click="easterEgg">Coded</a> by <a href="https://github.com/FairfieldBW" target="_blank">Lucas Chang</a>.</p>
+        <p>Coded by <a href="https://github.com/FairfieldBW" target="_blank">Lucas Chang</a>.</p>
         <p>Found a Bug? Email: lchang24@bayschoolsf.org</p>
         <p><a @click="isCreditsModalActive = true">Other Credits</a>.</p>
       </div>
@@ -189,80 +221,117 @@
 <script type="text/javascript">
   import scheduleData from "./data/schedule.json";
   import specialScheduleData from "./data/special_schedule.json";
+  import immersivesData from "./data/immersives.json";
+  import breaksData from "./data/breaks.json"
   import presetsData from "./data/presets.json";
 
   export default {
     data() {
       return {
+        // Time Variable
         time: new Date(),
+
+        // JSON Data
         schedule: scheduleData,
         special_schedule: specialScheduleData,
+        immersives: immersivesData,
+        breaks: breaksData,
         presets: presetsData,
-        special_schedule_bool: false,
+
+        // Modal Bools
         isRescheduleModalActive: false,
         isCustomizeModalActive: false,
         isLunchModalActive: false,
         isCreditsModalActive: false,
-        information_bools: {"Clock": true, "Block Indicator": true, "Date": true, "Special Schedule Indicator": true},
-        button_colors: {"Bay Site": "", "Lunch Menu": "", "Custom Schedule": "", "Customize": ""},
+
+        // Customizable Styles Variables
+        information_bools: {"Clock": true, "Time Left": true, "Date": true, "Special Schedule Indicator": true},
+        other_options: {"Detailed Time Left": false},
+        button_colors: {"Useful Links": "", "Lunch Menu": "", "Custom Schedule": "", "Customize": ""},
         olympic_teams: {'blue': "is-blue-team", 'crimson': "is-crimson-team", 'orange': "is-orange-team", "gold": "is-gold-team", "green": "is-green-team", "grey": "is-grey-team", "pink": "is-pink-team", "purple": "is-purple-team"},
-        blocks: {"A": "A", "B": "B", "C": "C", "D": "D", "E": "E", "F": "F"},
+        blocks: {"A": "A", "B": "B", "C": "C", "D": "D", "E": "E", "F": "F", "Activies + Sports/Drama": "Activies + Sports/Drama"},
         btn_possible_colors: {"Black": "is-black", "Gray": "is-dark", "Green": "is-primary", "Blue": "is-info", "Yellow": "is-warning", "Red": "is-danger", "None": ""},
         bar_possible_colors: {"Black": "is-black", "Gray": "is-dark", "Green": "is-primary", "Blue": "is-info", "Yellow": "is-warning", "Red": "is-danger"},
-        progress_color: "is-success",
-        preset: ""
+        progress_color: "is-primary",
+        preset: "",
+
+        // Other Variables
+        menu_length: 0,
+        special_schedule_bool: false,
+        show_schedule: true
       }
     },
     methods: {
+      // Sets the preset given either an olympic color or a preset defined in the 'presets.json' file
       setPreset(preset) {
         this.preset = preset;
         if (preset in this.olympic_teams) {
           var color_class = "is-" + preset + "-team"
           this.progress_color = color_class
-          this.button_colors = {"Bay Site": color_class, "Lunch Menu": color_class, "Custom Schedule": color_class, "Customize": color_class}
+          this.button_colors = {"Useful Links": color_class, "Lunch Menu": color_class, "Custom Schedule": color_class, "Customize": color_class}
         } else {
           this.progress_color = this.presets[preset]["progress_color"]
           this.button_colors = this.presets[preset]["button_colors"]
         }
       },
+      // Saves Custom Styles to Local Storage
       saveCustomizations() {
-        var customizations = {"information_bools": this.information_bools, "progress_color": this.progress_color, "button_colors": this.button_colors}
+        var customizations = {"information_bools": this.information_bools, "progress_color": this.progress_color, "button_colors": this.button_colors, "other_options": this.other_options}
         const parsed = JSON.stringify(customizations);
-        localStorage.setItem('custom_styles', parsed);
+        localStorage.setItem('customizations_real', parsed);
         this.isCustomizeModalActive = false;
       },
+      // Saves Custom Blocks to Local Storage
       saveBlocks() {
         const parsed = JSON.stringify(this.blocks);
-        localStorage.setItem('custom_blocks', parsed);
+        localStorage.setItem('blocks_real', parsed);
         this.isRescheduleModalActive = false;
       },
+      // Returns the name of blocks
       getName(key) {
         if (key in this.blocks) {
           return this.blocks[key]
         }
         return key
       },
+      // Turns lists of numbers into date objects so that they can be compared
       loadSchedule(scheduleData) {
         var output_schedule = scheduleData;
         var now = this.time;
         for (const block of Object.values(output_schedule)) {
-          for (const start_end of Object.values(block)) {
-            start_end[0] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), start_end[0][0], start_end[0][1])
-            start_end[1] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), start_end[1][0], start_end[1][1])
-          }        
+          if (Object.prototype.toString.call(block) == '[object Array]') {
+            block[0] = new Date(block[0]);
+            block[1] = new Date(block[1]);
+          } else {
+            for (const start_end of Object.values(block)) {
+              start_end[0] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), start_end[0][0], start_end[0][1])
+              start_end[1] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), start_end[1][0], start_end[1][1])
+            }
+          }   
         }
         return output_schedule
       },
-      easterEgg() {
-        this.$buefy.dialog.alert('Coded this for so long that my eye started twitching!')
-      },
+      // Get the amount of time left in the current block
       getTimeLeft(time) {
-        var hours = Math.floor(time/3600000)
-        var mins = Math.floor((time%3600000)/60000)
-        var secs = Math.floor(((time%3600000)%60000)/1000)
-        return hours + ":" + mins + ":" + secs
+        var output = "";
+        var mins = 0;
+        if (this.other_options["Detailed Time Left"]) {
+          var hours = Math.floor(time/3600000)
+          mins = Math.floor((time%3600000)/60000)
+          var secs = Math.floor(((time%3600000)%60000)/1000)
+          if (hours != 0) {output += hours + ":"}
+          mins = mins < 10 ? "0" + mins : mins;
+          secs = secs < 10 ? "0" + secs : secs;
+          output += mins + ":" + secs
+        } else {
+          mins = Math.floor(time/60000)
+          output += mins + " minutes"
+        }
+        return output
       },
+      // Returns the schedule dictionary for the current day
       getDayDict() {
+        // Checks for special schedule
         for (const date of Object.keys(this.special_schedule)) {
           var date_object = new Date(date);
           if (date_object.getFullYear() === this.time.getFullYear() && date_object.getMonth() === this.time.getMonth() && date_object.getDate() === this.time.getDate()) {
@@ -271,12 +340,17 @@
           }
         }
 
+        // Checks if it is an immersive
+        if (this.time > this.immersives["Immersive1"][0] && this.time < this.immersives["Immersive1"][1]) {
+          return this.immersives["Immersive1 Schedule"]
+        } else if (this.time > this.immersives["Immersive2"][0] && this.time < this.immersives["Immersive2"][1]) {
+          return this.immersives["Immersive2 Schedule"]
+        }
+
         this.special_schedule_bool = false;
         return Object.values(this.schedule)[this.time.getDay() - 1]
       },
-      dayDictLength() {
-        return Object.keys(this.getDayDict()).length
-      },
+      // Turns date object into time formatted in the HH:MM:SS format with optional meridiem
       getCurrentTime(time, meridiem_bool) {
         let hour = this.time.getHours();
         let min = this.time.getMinutes();
@@ -288,7 +362,6 @@
           }
           am_pm = "PM";
         }
-        hour = hour < 10 ? "0" + hour : hour;
         min = min < 10 ? "0" + min : min;
         sec = sec < 10 ? "0" + sec : sec;
         if (meridiem_bool) {
@@ -298,12 +371,14 @@
           return hour + ":" + min + ":" + sec
         }
       },
+      // Returns how far it is into the current block as a number betwen 0 and 100
       getProgress(block) {
         var block_length = parseInt((block[1] - block[0])/1000)/60
         var progress = parseInt((this.time - block[0])/1000)/60
 
         return Math.round(progress / block_length * 100)
       },
+      // Turns date object into time formatted in the HH:MM format
       getTime(time) {
         let hour = time.getHours();
         let min = time.getMinutes();
@@ -316,63 +391,92 @@
         min = min < 10 ? "0" + min : min;
         return hour + ":" + min
       },
+      // Returns First Period Given the Schedule for the Day
       getFirstPeriod(day) {
         return Object.values(day)[0][0]
       },
+      // Returns Last Period Given the Schedule for the Day
       getLastPeriod(day) {
         return Object.values(day)[Object.keys(day).length - 1][1]
       },
+      // Returns "block"; Returns either the name of the current break, 'Weekend', 'School hasn't started', 'School is over', the amount of time left in the block, or 'Passing'
       getBlock() {
+        // Get the Schedule for Today
         var dayDict = this.getDayDict()
+        for (const [name, start_end] of Object.entries(this.breaks)) {
+          var break_start = new Date(start_end[0]);
+          var break_end = new Date(start_end[1]);
+          if (this.time > break_start && this.time < break_end) {
+            this.show_schedule = false;
+            return name
+          }
+        }
         if (this.time.getDay() == 0 || this.time.getDay() == 6) {
+          this.show_schedule = false;
           return "Weekend";
         }
         else if (this.time < this.getFirstPeriod(dayDict))
         {
+          this.show_schedule = true;
           return "School hasn't started";
         }
         else if (this.time > this.getLastPeriod(dayDict))
         {
+          this.show_schedule = true;
           return "School is over";
         }
         else {
+          this.show_schedule = true;
           for (const value of Object.values(dayDict)) {
             if (this.time >= value[0] && this.time < value[1]) {
               var dif = value[1] - this.time
               return this.getTimeLeft(dif) + " left"
             }
           }
-          return "Block: Passing"
+          return "Passing"
         }
       },
+      // Update Time and Page Title Every Second
       tick () {
         this.time = new Date();
         document.title = this.getBlock()
       }
     },
     created () {
+      // Load Schedules; Turn Lists of start and end times into dates
       this.schedule = this.loadSchedule(this.schedule)
+      this.immersives = this.loadSchedule(this.immersives)
       this.special_schedule = this.loadSchedule(this.special_schedule)
+
+      // Set Menu Length
+      const menu = require.context('@/data/menu')
+      this.menu_length = menu.keys().length
+
+      // Repeat Tick Function Every One Second
       setInterval(this.tick, 1000);
     },
     mounted() {
-      if (localStorage.getItem('custom_blocks')) {
+      // Load Saved Blocks from Local Storage
+      if (localStorage.getItem('blocks_real')) {
         try {
-          this.blocks = JSON.parse(localStorage.getItem('custom_blocks'));
+          this.blocks = JSON.parse(localStorage.getItem('blocks_real'));
         } catch(e) {
-          localStorage.removeItem('custom_blocks');
+          localStorage.removeItem('blocks_real');
         }
       }
-      if (localStorage.getItem('custom_styles')) {
+
+      // Load Saved Styles from Local Storage
+      if (localStorage.getItem('customizations_real')) {
         try {
-          var custom_looks = JSON.parse(localStorage.getItem('custom_styles'));
+          var custom_looks = JSON.parse(localStorage.getItem('customizations_real'));
           this.information_bools = custom_looks["information_bools"];
           this.progress_color = custom_looks["progress_color"];
           this.button_colors = custom_looks["button_colors"];
+          this.other_options = custom_looks["other_options"]
         } catch(e) {
-          localStorage.removeItem('custom_styles');
+          localStorage.removeItem('customizations_real');
         }
       }
-    }
+    } 
   }
 </script>
