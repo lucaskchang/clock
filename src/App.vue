@@ -278,13 +278,13 @@
       saveCustomizations() {
         var customizations = {"information_bools": this.information_bools, "progress_color": this.progress_color, "button_colors": this.button_colors, "other_options": this.other_options}
         const parsed = JSON.stringify(customizations);
-        localStorage.setItem('customizations_real', parsed);
+        localStorage.setItem('customizations', parsed);
         this.isCustomizeModalActive = false;
       },
       // Saves Custom Blocks to Local Storage
       saveBlocks() {
         const parsed = JSON.stringify(this.blocks);
-        localStorage.setItem('blocks_real', parsed);
+        localStorage.setItem('blocks', parsed);
         this.isRescheduleModalActive = false;
       },
       // Returns the name of blocks
@@ -457,24 +457,24 @@
     },
     mounted() {
       // Load Saved Blocks from Local Storage
-      if (localStorage.getItem('blocks_real')) {
+      if (localStorage.getItem('blocks')) {
         try {
-          this.blocks = JSON.parse(localStorage.getItem('blocks_real'));
+          this.blocks = JSON.parse(localStorage.getItem('blocks'));
         } catch(e) {
-          localStorage.removeItem('blocks_real');
+          localStorage.removeItem('blocks');
         }
       }
 
       // Load Saved Styles from Local Storage
-      if (localStorage.getItem('customizations_real')) {
+      if (localStorage.getItem('customizations')) {
         try {
-          var custom_looks = JSON.parse(localStorage.getItem('customizations_real'));
+          var custom_looks = JSON.parse(localStorage.getItem('customizations'));
           this.information_bools = custom_looks["information_bools"];
           this.progress_color = custom_looks["progress_color"];
           this.button_colors = custom_looks["button_colors"];
           this.other_options = custom_looks["other_options"]
         } catch(e) {
-          localStorage.removeItem('customizations_real');
+          localStorage.removeItem('customizations');
         }
       }
     } 
