@@ -2,7 +2,7 @@
   "Default": {
   	"color": "primary",
     "button_colors": {
-      "Bay Site": "",
+      "Useful Links": "",
       "Lunch Menu": "",
       "Custom Schedule": "",
       "Customize": ""
@@ -12,7 +12,7 @@
   "Monochrome": {
   	"color": "dark",
     "button_colors": {
-      "Bay Site": "is-dark",
+      "Useful Links": "is-dark",
       "Lunch Menu": "is-dark",
       "Custom Schedule": "is-dark",
       "Customize": "is-dark"
