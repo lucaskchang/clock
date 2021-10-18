@@ -2,7 +2,7 @@
 
 Bay Clock is a website that shows the current schedule and block for the Bay School of San Francisco. 
 
-View it Here: [https://fairfieldbw.github.io/clock/](https://fairfieldbw.github.io/clock/)
+View it Here: [https://www.bayclock.org/](https://www.bayclock.org/)
 
 ## Features
 - Date and Time
