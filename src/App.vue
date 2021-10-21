@@ -91,6 +91,34 @@
           <b-field v-for="block in Object.keys(blocks)" :key="block" :label="block + ' Block:'">
             <b-input v-model="blocks[block]"></b-input>
           </b-field>
+          <b-field label="Activities + Sports/Drama Block">
+            <b-input v-model="activity_name"></b-input>
+          </b-field>
+          <nav class="level">
+            <div class="level-left">
+              <div class="level-item">
+                <b-checkbox v-model="activities_bool">
+                  Toggle Activities
+                </b-checkbox>
+              </div>
+            </div>
+          </nav>
+          <nav class="level">
+            <div class="level-left">
+              <div class="level-item">
+                <h6 class="title is-6">Activities Schedule</h6>
+              </div>
+              <div class="level-item">
+                <b-tag type="is-info" rounded>New!</b-tag>
+              </div>
+            </div>
+          </nav>
+          <b-tabs v-model="activities_tabs">
+            <b-tab-item v-for="(value, key) in activities_schedule" :label="key" :key="key">
+              <b-timepicker v-model="value[0]" placeholder="Start Time" icon="clock"></b-timepicker>
+              <b-timepicker v-model="value[1]" placeholder="End Time" icon="clock"></b-timepicker>
+            </b-tab-item>
+          </b-tabs>
         </section>
         <footer class="modal-card-foot">
           <b-button label="Close" @click="isRescheduleModalActive = false"/>
@@ -249,11 +277,18 @@
         other_options: {"Detailed Time Left": false},
         button_colors: {"Useful Links": "", "Lunch Menu": "", "Custom Schedule": "", "Customize": ""},
         olympic_teams: {'blue': "is-blue-team", 'crimson': "is-crimson-team", 'orange': "is-orange-team", "gold": "is-gold-team", "green": "is-green-team", "grey": "is-grey-team", "pink": "is-pink-team", "purple": "is-purple-team"},
-        blocks: {"A": "A", "B": "B", "C": "C", "D": "D", "E": "E", "F": "F", "Activies + Sports/Drama": "Activies + Sports/Drama"},
+        blocks: {"A": "A", "B": "B", "C": "C", "D": "D", "E": "E", "F": "F"},
         btn_possible_colors: {"Black": "is-black", "Gray": "is-dark", "Green": "is-primary", "Blue": "is-info", "Yellow": "is-warning", "Red": "is-danger", "None": ""},
         bar_possible_colors: {"Gray": "is-dark", "Green": "is-primary", "Blue": "is-info", "Yellow": "is-warning", "Red": "is-danger"},
         progress_color: "is-primary",
         preset: "",
+
+        // Activities Variables
+        activities_bool: true,
+        activities_schedule: {"Monday": [[15, 45], [17, 0]], "Tuesday": [[15, 45], [17, 0]], "Wednesday": [[15, 45], [17, 0]], "Thursday": [[14, 35], [16, 0]], "Friday": [[14, 35], [16, 0]]},
+        
+        activity_name: "Activities + Sports/Drama Block",
+        activities_tabs: 0,
 
         // Other Variables
         menu_length: 0,
@@ -285,10 +320,25 @@
       saveBlocks() {
         const parsed = JSON.stringify(this.blocks);
         localStorage.setItem('blocks', parsed);
+
+        var temp_activities_schedule = {}
+        for (const [name, start_end] of Object.entries(this.activities_schedule)) {
+          temp_activities_schedule[name] = [[start_end[0].getHours(), start_end[0].getMinutes()], [start_end[1].getHours(), start_end[1].getMinutes()]]
+        }
+
+        console.log(temp_activities_schedule)
+
+        var activity_data = {"activities_bool": this.activities_bool, "activities_schedule": temp_activities_schedule, "activity_name": this.activity_name}
+        const parsed2 = JSON.stringify(activity_data);
+        localStorage.setItem("activity_data", parsed2)
+
         this.isRescheduleModalActive = false;
       },
       // Returns the name of blocks
       getName(key) {
+        if (key == "Activities + Sports/Drama Block") {
+          return this.activity_name
+        }
         if (key in this.blocks) {
           return this.blocks[key]
         }
@@ -348,6 +398,11 @@
         }
 
         this.special_schedule_bool = false;
+        if (this.activities_bool) {
+          var temp_schedule = Object.values(this.schedule)[this.time.getDay() - 1]
+          temp_schedule["Activities + Sports/Drama Block"] = Object.values(this.activities_schedule)[this.time.getDay() - 1]
+          return temp_schedule
+        }
         return Object.values(this.schedule)[this.time.getDay() - 1]
       },
       // Turns date object into time formatted in the HH:MM:SS format with optional meridiem
@@ -403,6 +458,7 @@
       getBlock() {
         // Get the Schedule for Today
         var dayDict = this.getDayDict()
+        delete dayDict["Activities + Sports/Drama Block"]
         for (const [name, start_end] of Object.entries(this.breaks)) {
           var break_start = new Date(start_end[0]);
           var break_end = new Date(start_end[1]);
@@ -448,18 +504,16 @@
       this.immersives = this.loadSchedule(this.immersives)
       this.special_schedule = this.loadSchedule(this.special_schedule)
 
-      // Set Menu Length
-      const menu = require.context('@/data/menu')
-      this.menu_length = menu.keys().length
-
-      // Repeat Tick Function Every One Second
-      setInterval(this.tick, 1000);
-    },
-    mounted() {
-      // Load Saved Blocks from Local Storage
       if (localStorage.getItem('blocks')) {
         try {
           this.blocks = JSON.parse(localStorage.getItem('blocks'));
+          for (const block_name of Object.keys(this.blocks)) {
+            if (block_name == "Activies + Sports/Drama") {
+              this.blocks["Activities + Sports/Drama"] = this.blocks["Activies + Sports/Drama"]
+              delete this.blocks["Activies + Sports/Drama"]
+              this.saveBlocks()
+            }
+          }
         } catch(e) {
           localStorage.removeItem('blocks');
         }
@@ -477,6 +531,29 @@
           localStorage.removeItem('customizations');
         }
       }
-    } 
+
+      // Load Activity Data from Local Storage
+      if (localStorage.getItem('activity_data')) {
+        try {
+          var activity_datum = JSON.parse(localStorage.getItem('activity_data'));
+          this.activities_bool = activity_datum["activities_bool"];
+          this.activities_schedule = activity_datum["activities_schedule"];
+          this.activity_name = activity_datum["activity_name"];
+        } catch(e) {
+          localStorage.removeItem('activity_data');
+        }
+      }
+
+      for (const [name, start_end] of Object.entries(this.activities_schedule)) {
+        this.activities_schedule[name] = [new Date(this.time.getFullYear(), this.time.getMonth(), this.time.getDate(), start_end[0][0], start_end[0][1]), new Date(this.time.getFullYear(), this.time.getMonth(), this.time.getDate(), start_end[1][0], start_end[1][1])]
+      }
+
+      // Set Menu Length
+      const menu = require.context('@/data/menu')
+      this.menu_length = menu.keys().length
+
+      // Repeat Tick Function Every One Second
+      setInterval(this.tick, 1000);
+    }
   }
 </script>
