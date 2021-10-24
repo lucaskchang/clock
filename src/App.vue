@@ -326,8 +326,6 @@
           temp_activities_schedule[name] = [[start_end[0].getHours(), start_end[0].getMinutes()], [start_end[1].getHours(), start_end[1].getMinutes()]]
         }
 
-        console.log(temp_activities_schedule)
-
         var activity_data = {"activities_bool": this.activities_bool, "activities_schedule": temp_activities_schedule, "activity_name": this.activity_name}
         const parsed2 = JSON.stringify(activity_data);
         localStorage.setItem("activity_data", parsed2)
@@ -457,8 +455,6 @@
       // Returns "block"; Returns either the name of the current break, 'Weekend', 'School hasn't started', 'School is over', the amount of time left in the block, or 'Passing'
       getBlock() {
         // Get the Schedule for Today
-        var dayDict = this.getDayDict()
-        delete dayDict["Activities + Sports/Drama Block"]
         for (const [name, start_end] of Object.entries(this.breaks)) {
           var break_start = new Date(start_end[0]);
           var break_end = new Date(start_end[1]);
@@ -471,7 +467,11 @@
           this.show_schedule = false;
           return "Weekend";
         }
-        else if (this.time < this.getFirstPeriod(dayDict))
+
+        var dayDict = this.getDayDict()
+        delete dayDict["Activities + Sports/Drama Block"]
+        
+        if (this.time < this.getFirstPeriod(dayDict))
         {
           this.show_schedule = true;
           return "School hasn't started";
