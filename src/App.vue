@@ -97,15 +97,6 @@
           <nav class="level">
             <div class="level-left">
               <div class="level-item">
-                <b-checkbox v-model="activities_bool">
-                  Toggle Activities
-                </b-checkbox>
-              </div>
-            </div>
-          </nav>
-          <nav class="level">
-            <div class="level-left">
-              <div class="level-item">
                 <h6 class="title is-6">Activities Schedule</h6>
               </div>
               <div class="level-item">
@@ -155,6 +146,13 @@
                 <b-field>
                   <b-checkbox v-for="item in Object.keys(other_options)" :key="item" v-model="other_options[item]">
                     {{ item }}
+                  </b-checkbox>
+                </b-field>
+              </div>
+              <div class="level-item">
+                <b-field>
+                  <b-checkbox v-model="activities_bool">
+                    Toggle Activities
                   </b-checkbox>
                 </b-field>
               </div>
@@ -470,7 +468,7 @@
 
         var dayDict = this.getDayDict()
         delete dayDict["Activities + Sports/Drama Block"]
-        
+
         if (this.time < this.getFirstPeriod(dayDict))
         {
           this.show_schedule = true;
