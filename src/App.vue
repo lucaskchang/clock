@@ -507,8 +507,10 @@
           this.blocks = JSON.parse(localStorage.getItem('blocks'));
           for (const block_name of Object.keys(this.blocks)) {
             if (block_name == "Activies + Sports/Drama") {
-              this.blocks["Activities + Sports/Drama"] = this.blocks["Activies + Sports/Drama"]
               delete this.blocks["Activies + Sports/Drama"]
+              this.saveBlocks()
+            } else if (block_name == "Activities + Sports/Drama") {
+              delete this.blocks["Activities + Sports/Drama"]
               this.saveBlocks()
             }
           }
