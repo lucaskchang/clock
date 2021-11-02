@@ -236,9 +236,12 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="content has-text-centered">
-        <p>Coded by <a href="https://github.com/FairfieldBW" target="_blank">Lucas Chang</a>.</p>
-        <p>Found a Bug? Email: lchang24@bayschoolsf.org</p>
-        <p><a @click="isCreditsModalActive = true">Other Credits</a>.</p>
+        <p>Coded by <a href="https://github.com/FairfieldBW" target="_blank">Lucas Chang</a></p>
+        <p>
+          <a href="https://github.com/FairfieldBW/clock" target="_blank">Github Repo</a> / 
+          <a @click="isCreditsModalActive = true">Credits</a> / 
+          <a @click="bugReport()">Bug Report</a>
+        </p>
       </div>
     </footer>
   </div>
@@ -295,6 +298,9 @@
       }
     },
     methods: {
+      bugReport() {
+        this.$buefy.dialog.alert('Email lchang24@bayschoolsf.org')
+      },
       // Sets the preset given either an olympic color or a preset defined in the 'presets.json' file
       setPreset(preset) {
         this.preset = preset;
