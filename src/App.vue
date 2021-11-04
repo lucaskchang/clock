@@ -236,7 +236,7 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="content has-text-centered">
-        <p>Coded by <a href="https://github.com/FairfieldBW" target="_blank">Lucas Chang</a></p>
+        <p>Coded by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a></p>
         <p>
           <a href="https://github.com/FairfieldBW/clock" target="_blank">Github Repo</a> / 
           <a @click="isCreditsModalActive = true">Credits</a> / 
@@ -478,7 +478,7 @@
         if (this.time < this.getFirstPeriod(dayDict))
         {
           this.show_schedule = true;
-          return "School hasn't started";
+          return this.getTimeLeft(this.getFirstPeriod(dayDict) - this.time) + " until start"
         }
         else if (this.time > this.getLastPeriod(dayDict))
         {
@@ -489,8 +489,7 @@
           this.show_schedule = true;
           for (const value of Object.values(dayDict)) {
             if (this.time >= value[0] && this.time < value[1]) {
-              var dif = value[1] - this.time
-              return this.getTimeLeft(dif) + " left"
+              return this.getTimeLeft(value[1] - this.time) + " left"
             }
           }
           return "Passing"
