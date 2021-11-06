@@ -4,10 +4,11 @@
     <section class="section" id="top-bar">
       <nav class="level">
         <div class="level-left" v-if="information_bools['Clock']">
-          <h1 class="title is-1">{{ getCurrentTime(time, true) }}</h1>
+          <h1 class="title is-1">{{ getTimeString(time, true) }}</h1>
         </div>
         <div class="level-right" v-if="information_bools['Time Left']">
-          <h1 class="title is-1">{{ getBlock() }}</h1>
+          <h1 class="title is-1" v-if="show_schedule">{{ getBlock() }}</h1>
+          <h1 class="title is-1" v-if="!show_schedule">{{ block }}</h1>
         </div>
       </nav>
     </section>
@@ -33,7 +34,7 @@
               <p class="level-item">{{ getName(key) }}</p>
             </div>
             <div class="level-right">
-              <p class="level-item">{{ getTime(value[0]) + " - " + getTime(value[1]) }}</p>
+              <p class="level-item">{{ getTimeString(value[0], false, true, true, false) + " - " + getTimeString(value[1], false, true, true, false) }}</p>
             </div>
           </nav>
         </b-progress>
@@ -294,7 +295,9 @@
         // Other Variables
         menu_length: 0,
         special_schedule_bool: false,
-        show_schedule: true
+        show_schedule: true,
+        day_dict: {},
+        block: ""
       }
     },
     methods: {
@@ -359,7 +362,7 @@
               start_end[0] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), start_end[0][0], start_end[0][1])
               start_end[1] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), start_end[1][0], start_end[1][1])
             }
-          }   
+          }
         }
         return output_schedule
       },
@@ -408,45 +411,32 @@
         return Object.values(this.schedule)[this.time.getDay() - 1]
       },
       // Turns date object into time formatted in the HH:MM:SS format with optional meridiem
-      getCurrentTime(time, meridiem_bool) {
-        let hour = this.time.getHours();
-        let min = this.time.getMinutes();
-        let sec = this.time.getSeconds();
-        var am_pm = "AM";
+      getTimeString(time, meridiem_bool, hours=true, minutes=true, seconds=true) {
+        var output = ""
+        let hour = time.getHours();
+        let minute = time.getMinutes();
+        let second = time.getSeconds();
+        var meridiem = "AM";
         if (hour > 11) {
           if (hour != 12){
             hour -=12
           }
-          am_pm = "PM";
+          meridiem = "PM";
         }
-        min = min < 10 ? "0" + min : min;
-        sec = sec < 10 ? "0" + sec : sec;
-        if (meridiem_bool) {
-          return hour + ":" + min + ":" + sec + am_pm
-        }
-        else {
-          return hour + ":" + min + ":" + sec
-        }
+        minute = minute < 10 ? "0" + minute : minute;
+        second = second < 10 ? "0" + second : second;
+        if (hours) { output += hour + ":" }
+        if (minutes) { output += minute }
+        if (seconds) { output += ":" + second }
+        if (meridiem_bool) { output += meridiem }
+        return output
       },
-      // Returns how far it is into the current block as a number betwen 0 and 100
+      // Returns how far it is into the current block on a scale of 0 and 100
       getProgress(block) {
         var block_length = parseInt((block[1] - block[0])/1000)/60
         var progress = parseInt((this.time - block[0])/1000)/60
 
         return Math.round(progress / block_length * 100)
-      },
-      // Turns date object into time formatted in the HH:MM format
-      getTime(time) {
-        let hour = time.getHours();
-        let min = time.getMinutes();
-        if (hour > 11) {
-          if (hour != 12){
-            hour -=12
-          }
-        }
-        hour = hour < 10 ? "0" + hour : hour;
-        min = min < 10 ? "0" + min : min;
-        return hour + ":" + min
       },
       // Returns First Period Given the Schedule for the Day
       getFirstPeriod(day) {
@@ -458,41 +448,75 @@
       },
       // Returns "block"; Returns either the name of the current break, 'Weekend', 'School hasn't started', 'School is over', the amount of time left in the block, or 'Passing'
       getBlock() {
-        // Get the Schedule for Today
-        for (const [name, start_end] of Object.entries(this.breaks)) {
-          var break_start = new Date(start_end[0]);
-          var break_end = new Date(start_end[1]);
-          if (this.time > break_start && this.time < break_end) {
-            this.show_schedule = false;
-            return name
-          }
-        }
-        if (this.time.getDay() == 0 || this.time.getDay() == 6) {
-          this.show_schedule = false;
-          return "Weekend";
-        }
-
-        var dayDict = this.getDayDict()
-        delete dayDict["Activities + Sports/Drama Block"]
+        var dayDict = this.day_dict
 
         if (this.time < this.getFirstPeriod(dayDict))
         {
-          this.show_schedule = true;
           return this.getTimeLeft(this.getFirstPeriod(dayDict) - this.time) + " until start"
         }
         else if (this.time > this.getLastPeriod(dayDict))
         {
-          this.show_schedule = true;
           return "School is over";
         }
         else {
-          this.show_schedule = true;
           for (const value of Object.values(dayDict)) {
             if (this.time >= value[0] && this.time < value[1]) {
               return this.getTimeLeft(value[1] - this.time) + " left"
             }
           }
           return "Passing"
+        }
+      },
+      // Set the dictionary for the day and whether or not to show the schedule
+      start() {
+        for (const [name, start_end] of Object.entries(this.breaks)) {
+          var break_start = new Date(start_end[0]);
+          var break_end = new Date(start_end[1]);
+          if (this.time > break_start && this.time < break_end) {
+            this.show_schedule = false;
+            this.block = name;
+            return
+            }
+        }
+        if (this.time.getDay() == 0 || this.time.getDay() == 6) {
+          this.show_schedule = false;
+          this.block = "Weekend"
+        } else {
+          this.day_dict = this.getDayDict()
+          delete this.day_dict["Activities + Sports/Drama Block"]
+        }
+      },
+      loadLocalStorage() {
+        if (localStorage.getItem('blocks')) {
+          this.blocks = JSON.parse(localStorage.getItem('blocks'));
+          for (const block_name of Object.keys(this.blocks)) {
+            if (block_name == "Activies + Sports/Drama") {
+              delete this.blocks["Activies + Sports/Drama"]
+              this.saveBlocks()
+            } else if (block_name == "Activities + Sports/Drama") {
+              delete this.blocks["Activities + Sports/Drama"]
+              this.saveBlocks()
+            }
+          }
+        }
+
+        if (localStorage.getItem('customizations')) {
+          var custom_looks = JSON.parse(localStorage.getItem('customizations'));
+          this.information_bools = custom_looks["information_bools"];
+          this.progress_color = custom_looks["progress_color"];
+          this.button_colors = custom_looks["button_colors"];
+          this.other_options = custom_looks["other_options"]
+        }
+
+        if (localStorage.getItem('activity_data')) {
+          var activity_datum = JSON.parse(localStorage.getItem('activity_data'));
+          this.activities_bool = activity_datum["activities_bool"];
+          this.activities_schedule = activity_datum["activities_schedule"];
+          this.activity_name = activity_datum["activity_name"];
+        }
+
+        for (const [name, start_end] of Object.entries(this.activities_schedule)) {
+          this.activities_schedule[name] = [new Date(this.time.getFullYear(), this.time.getMonth(), this.time.getDate(), start_end[0][0], start_end[0][1]), new Date(this.time.getFullYear(), this.time.getMonth(), this.time.getDate(), start_end[1][0], start_end[1][1])]
         }
       },
       // Update Time and Page Title Every Second
@@ -507,51 +531,8 @@
       this.immersives = this.loadSchedule(this.immersives)
       this.special_schedule = this.loadSchedule(this.special_schedule)
 
-      if (localStorage.getItem('blocks')) {
-        try {
-          this.blocks = JSON.parse(localStorage.getItem('blocks'));
-          for (const block_name of Object.keys(this.blocks)) {
-            if (block_name == "Activies + Sports/Drama") {
-              delete this.blocks["Activies + Sports/Drama"]
-              this.saveBlocks()
-            } else if (block_name == "Activities + Sports/Drama") {
-              delete this.blocks["Activities + Sports/Drama"]
-              this.saveBlocks()
-            }
-          }
-        } catch(e) {
-          localStorage.removeItem('blocks');
-        }
-      }
-
-      // Load Saved Styles from Local Storage
-      if (localStorage.getItem('customizations')) {
-        try {
-          var custom_looks = JSON.parse(localStorage.getItem('customizations'));
-          this.information_bools = custom_looks["information_bools"];
-          this.progress_color = custom_looks["progress_color"];
-          this.button_colors = custom_looks["button_colors"];
-          this.other_options = custom_looks["other_options"]
-        } catch(e) {
-          localStorage.removeItem('customizations');
-        }
-      }
-
-      // Load Activity Data from Local Storage
-      if (localStorage.getItem('activity_data')) {
-        try {
-          var activity_datum = JSON.parse(localStorage.getItem('activity_data'));
-          this.activities_bool = activity_datum["activities_bool"];
-          this.activities_schedule = activity_datum["activities_schedule"];
-          this.activity_name = activity_datum["activity_name"];
-        } catch(e) {
-          localStorage.removeItem('activity_data');
-        }
-      }
-
-      for (const [name, start_end] of Object.entries(this.activities_schedule)) {
-        this.activities_schedule[name] = [new Date(this.time.getFullYear(), this.time.getMonth(), this.time.getDate(), start_end[0][0], start_end[0][1]), new Date(this.time.getFullYear(), this.time.getMonth(), this.time.getDate(), start_end[1][0], start_end[1][1])]
-      }
+      this.loadLocalStorage()
+      this.start()
 
       // Set Menu Length
       const menu = require.context('@/data/menu')

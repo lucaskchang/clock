@@ -102,9 +102,7 @@ In order to update  or add new breaks you must edit the `breaks.json` file locat
 
 Here is an example break entry:
 ```json
-{
-	"Summer Break": ["2022/06/15", "2022/08/31"]
-}
+"S1 Midterm Break": ["2021/10/16", "2021/10/24"]
 ```
 ### Updating the Lunch Menu:
 In order to update the lunch menu you must replace the files in the `data/menu` folder. The images must be in .jpg format and should be named `1.jpg`, `2.jpg`, etc.
