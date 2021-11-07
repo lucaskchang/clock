@@ -27,7 +27,7 @@
 
     <!-- Container for Blocks -->
     <div id="block-container" v-if="show_schedule">
-      <section class="section block" v-for="(value, key) in getDayDict()" :key="key">
+      <section class="section block" v-for="(value, key) in day_dict" :key="key">
         <b-progress :value="getProgress(value)" size="is-large" :type="progress_color" show-value>
           <nav class="level is-mobile">
             <div class="level-left">
@@ -522,7 +522,8 @@
       // Update Time and Page Title Every Second
       tick () {
         this.time = new Date();
-        document.title = this.getBlock()
+        if (this.show_schedule) { document.title = this.getBlock() }
+        else { document.title = this.block }
       }
     },
     created () {
