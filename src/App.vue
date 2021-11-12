@@ -95,16 +95,7 @@
           <b-field label="Activities + Sports/Drama Block">
             <b-input v-model="activity_name"></b-input>
           </b-field>
-          <nav class="level">
-            <div class="level-left">
-              <div class="level-item">
-                <h6 class="title is-6">Activities Schedule</h6>
-              </div>
-              <div class="level-item">
-                <b-tag type="is-info" rounded>New!</b-tag>
-              </div>
-            </div>
-          </nav>
+          <h6 class="title is-6">Activities Schedule</h6>
           <b-tabs v-model="activities_tabs">
             <b-tab-item v-for="(value, key) in activities_schedule" :label="key" :key="key">
               <b-timepicker v-model="value[0]" placeholder="Start Time" icon="clock"></b-timepicker>
@@ -483,7 +474,6 @@
           this.block = "Weekend"
         } else {
           this.day_dict = this.getDayDict()
-          delete this.day_dict["Activities + Sports/Drama Block"]
         }
       },
       loadLocalStorage() {
