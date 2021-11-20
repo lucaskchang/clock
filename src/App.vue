@@ -271,8 +271,8 @@
         button_colors: {"Useful Links": "", "Lunch Menu": "", "Custom Schedule": "", "Customize": ""},
         olympic_teams: {'blue': "is-blue-team", 'crimson': "is-crimson-team", 'orange': "is-orange-team", "gold": "is-gold-team", "green": "is-green-team", "grey": "is-grey-team", "pink": "is-pink-team", "purple": "is-purple-team"},
         blocks: {"A": "A", "B": "B", "C": "C", "D": "D", "E": "E", "F": "F"},
-        btn_possible_colors: {"Black": "is-black", "Gray": "is-dark", "Green": "is-primary", "Blue": "is-info", "Yellow": "is-warning", "Red": "is-danger", "None": ""},
-        bar_possible_colors: {"Gray": "is-dark", "Green": "is-primary", "Blue": "is-info", "Yellow": "is-warning", "Red": "is-danger"},
+        btn_possible_colors: {"Black": "is-black", "Gray": "is-dark", "Green": "is-jude-green", "Blue": "is-primary", "Yellow": "is-jude-yellow", "Red": "is-jude-red", "Pink": "is-jude-pink", "Orange": "is-jude-orange", "None": ""},
+        bar_possible_colors: {"Gray": "is-dark", "Green": "is-jude-green", "Blue": "is-primary", "Yellow": "is-jude-yellow", "Red": "is-jude-red", "Pink": "is-jude-pink", "Orange": "is-jude-orange"},
         progress_color: "is-primary",
         preset: "",
 

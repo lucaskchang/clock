@@ -1,6 +1,6 @@
 @import "~bulma/sass/utilities/_all";
 
-$primary: #41B86B;
+$primary: #59a5da;
 $primary-light: findLightColor($primary);
 $primary-dark: findDarkColor($primary);
 $primary-invert: findColorInvert($primary);
@@ -22,6 +22,17 @@ $pink-team-invert: findColorInvert($pink-team);
 $purple-team: #8601ff;
 $purple-team-invert: findColorInvert($purple-team);
 
+$jude-red: #f04b31;
+$jude-red-invert: findColorInvert($jude-red);
+$jude-green: #49b647;
+$jude-green-invert: findColorInvert($jude-green);
+$jude-orange: #f36e22;
+$jude-orange-invert: findColorInvert($jude-orange);
+$jude-yellow: #fba72d;
+$jude-yellow-invert: findColorInvert($jude-yellow);
+$jude-pink: #f04e9c;
+$jude-pink-invert: findColorInvert($jude-pink);
+
 $custom-colors: (
   "blue-team": ($blue-team, $blue-team-invert),
   "crimson-team": ($crimson-team, $crimson-team-invert),
@@ -30,7 +41,12 @@ $custom-colors: (
   "green-team": ($green-team, $green-team-invert),
   "grey-team": ($grey-team, $grey-team-invert),
   "pink-team": ($pink-team, $pink-team-invert),
-  "purple-team": ($purple-team, $purple-team-invert)
+  "purple-team": ($purple-team, $purple-team-invert),
+  "jude-red": ($jude-red, $jude-red-invert),
+  "jude-green": ($jude-green, $jude-green-invert),
+  "jude-orange": ($jude-orange, $jude-orange-invert),
+  "jude-yellow": ($jude-yellow, $jude-yellow-invert),
+  "jude-pink": ($jude-pink, $jude-pink-invert)
 );
 
 $colors: mergeColorMaps(
