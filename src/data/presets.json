@@ -1,22 +1,12 @@
 {
   "Default": {
   	"color": "primary",
-    "button_colors": {
-      "Useful Links": "",
-      "Lunch Menu": "",
-      "Custom Schedule": "",
-      "Customize": ""
-    },
+    "buttons_color": "",
     "progress_color": "is-primary"
   },
   "Monochrome": {
   	"color": "dark",
-    "button_colors": {
-      "Useful Links": "is-dark",
-      "Lunch Menu": "is-dark",
-      "Custom Schedule": "is-dark",
-      "Customize": "is-dark"
-    },
+    "buttons_color": "is-dark",
     "progress_color": "is-dark"
   }
 }
