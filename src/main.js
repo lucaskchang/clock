@@ -10,6 +10,7 @@ Vue.use(Print);
 import Home from './components/Home.vue'
 import ScheduleMaker from './components/ScheduleMaker.vue'
 import SuperIdol from './components/SuperIdol.vue'
+import Letter from './components/Letter.vue'
 
 Vue.config.productionTip = false
 
@@ -19,7 +20,8 @@ Vue.use(VueRouter)
 const routes = [
   { name: 'home', path: '/', component: Home },
   { name: 'schedule', path: '/schedule', component: ScheduleMaker },
-  { name: 'super', path: '/superidol', component: SuperIdol }
+  { name: 'super', path: '/superidol', component: SuperIdol },
+  { name: 'letter', path: '/letter', component: Letter }
 ]
 
 const router = new VueRouter({ mode: 'history', routes: routes});

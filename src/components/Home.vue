@@ -260,7 +260,7 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="content has-text-centered">
-        <p><a @click="isSantaModalActive = true" style="color:#4a4a4a">Coded</a> by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a></p>
+        <p><a @click="isSantaModalActive = true" style="color:#4a4a4a">Coded</a> <router-link style="color:#4a4a4a" to="/letter">by</router-link> <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a></p>
         <p>
           <a href="https://github.com/FairfieldBW/clock" target="_blank">Github Repo</a> / 
           <a @click="isCreditsModalActive = true">Credits</a> / 
