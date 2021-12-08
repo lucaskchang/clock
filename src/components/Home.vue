@@ -50,7 +50,7 @@
               <template #trigger="{ active }">
                 <b-button
                   label="Useful Links"
-                  :type="button_colors['Useful Links']"
+                  :type="buttons_color"
                   :icon-right="active ? 'menu-up' : 'menu-down'" 
                   rounded
                   />
@@ -62,13 +62,13 @@
             </b-dropdown>
           </div>
           <div class="level-item">
-            <b-button label="Lunch Menu" :type="button_colors['Lunch Menu']" @click="isLunchModalActive = true" rounded/>
+            <b-button label="Lunch Menu" :type="buttons_color" @click="isLunchModalActive = true" rounded/>
           </div>
           <div class="level-item">
-            <b-button label="Custom Schedule" :type="button_colors['Custom Schedule']" @click="isRescheduleModalActive = true" rounded/>
+            <b-button label="Custom Schedule" :type="buttons_color" @click="isRescheduleModalActive = true" rounded/>
           </div>
           <div class="level-item">
-            <b-button label="Customize" :type="button_colors['Customize']" @click="isCustomizeModalActive = true" rounded/>
+            <b-button label="Custom Styles" :type="buttons_color" @click="isCustomizeModalActive = true" rounded/>
           </div>
         </div>
       </nav>
@@ -82,7 +82,7 @@
     </b-modal>
 
     <!-- Reschedule Modal for Custom Blocks -->
-    <b-modal v-model="isRescheduleModalActive" can-cancel="['escape', 'outside']">
+    <b-modal v-model="isRescheduleModalActive" v-bind:can-cancel="['escape', 'outside']">
       <div class="modal-card" style="width: auto">
         <header class="modal-card-head">
           <p class="modal-card-title">Custom Schedule</p>
@@ -111,7 +111,7 @@
     </b-modal>
 
     <!-- Customizable Styles Modal -->
-    <b-modal v-model="isCustomizeModalActive" can-cancel="['escape', 'outside']">
+    <b-modal v-model="isCustomizeModalActive" v-bind:can-cancel="['escape', 'outside']">
       <div class="modal-card" style="width: auto">
         <header class="modal-card-head">
           <p class="modal-card-title">Customize</p>
@@ -205,7 +205,7 @@
     </b-modal>
 
     <!-- Credits Modal -->
-    <b-modal v-model="isCreditsModalActive" can-cancel="['escape', 'outside']">
+    <b-modal v-model="isCreditsModalActive" v-bind:can-cancel="['escape', 'outside']">
       <div class="modal-card" style="width: auto">
         <header class="modal-card-head">
           <p class="modal-card-title">Credits</p>
@@ -226,7 +226,7 @@
     </b-modal>
 
     <!-- Pages Modal -->
-    <b-modal v-model="isPagesModalActive" can-cancel="['escape', 'outside']">
+    <b-modal v-model="isPagesModalActive" v-bind:can-cancel="['escape', 'outside']">
       <div class="modal-card" style="width: auto">
         <header class="modal-card-head">
           <p class="modal-card-title">Pages</p>
@@ -251,15 +251,20 @@
       </div>
     </b-modal>
 
+    <b-modal v-model="isSantaModalActive">
+      <p class="image is-4by3">
+        <img :src="require('../media/santa.gif')">
+      </p>
+    </b-modal>
+
     <!-- Footer -->
     <footer class="footer">
       <div class="content has-text-centered">
-        <p>Coded by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a></p>
+        <p><a @click="isSantaModalActive = true" style="color:#4a4a4a">Coded</a> by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a></p>
         <p>
           <a href="https://github.com/FairfieldBW/clock" target="_blank">Github Repo</a> / 
           <a @click="isCreditsModalActive = true">Credits</a> / 
-          <a @click="bugReport()">Bug Report</a> / 
-          <a @click="isPagesModalActive = true">Pages</a>
+          <a @click="bugReport()">Bug Report</a>
         </p>
       </div>
     </footer>
@@ -272,39 +277,49 @@
   import immersivesData from "../data/immersives.json";
   import breaksData from "../data/breaks.json"
   import presetsData from "../data/presets.json";
+
   export default {
     data() {
       return {
         // Time Variable
         time: new Date(),
+
         // JSON Data
         schedule: scheduleData,
         special_schedule: specialScheduleData,
         immersives: immersivesData,
         breaks: breaksData,
         presets: presetsData,
+
         // Modal Bools
-        isRescheduleModalActive: false,
         isCustomizeModalActive: false,
+        isRescheduleModalActive: false,
         isLunchModalActive: false,
         isCreditsModalActive: false,
         isPagesModalActive: false,
+        isSantaModalActive: false,
+
         // Customizable Styles Variables
         information_bools: {"Clock": true, "Time Left": true, "Date": true, "Special Schedule Indicator": true},
         other_options: {"Detailed Time Left": false},
-        button_colors: {"Useful Links": "", "Lunch Menu": "", "Custom Schedule": "", "Customize": ""},
+        buttons_color: "",
         olympic_teams: {'blue': "is-blue-team", 'crimson': "is-crimson-team", 'orange': "is-orange-team", "gold": "is-gold-team", "green": "is-green-team", "grey": "is-grey-team", "pink": "is-pink-team", "purple": "is-purple-team"},
         blocks: {"A": "A", "B": "B", "C": "C", "D": "D", "E": "E", "F": "F"},
         btn_possible_colors: {"Black": "is-black", "Gray": "is-dark", "Green": "is-jude-green", "Blue": "is-primary", "Yellow": "is-jude-yellow", "Red": "is-jude-red", "Pink": "is-jude-pink", "Orange": "is-jude-orange", "None": ""},
         bar_possible_colors: {"Gray": "is-dark", "Green": "is-jude-green", "Blue": "is-primary", "Yellow": "is-jude-yellow", "Red": "is-jude-red", "Pink": "is-jude-pink", "Orange": "is-jude-orange"},
         progress_color: "is-primary",
         preset: "",
+        customize_tabs: 0,
+
+        color_guide: {"A": "is-jude-green", "B": "is-primary", "C": "is-jude-yellow", "D": "is-jude-red", "E": "is-jude-pink", "F": "is-jude-orange"},
+
         // Activities Variables
         activities_bool: true,
         activities_schedule: {"Monday": [[15, 45], [17, 0]], "Tuesday": [[15, 45], [17, 0]], "Wednesday": [[15, 45], [17, 0]], "Thursday": [[14, 35], [16, 0]], "Friday": [[14, 35], [16, 0]]},
         
         activity_name: "Activities + Sports/Drama Block",
         activities_tabs: 0,
+
         // Other Variables
         menu_length: 0,
         special_schedule_bool: false,
@@ -323,10 +338,10 @@
         if (preset in this.olympic_teams) {
           var color_class = "is-" + preset + "-team"
           this.progress_color = color_class
-          this.button_colors = {"Useful Links": color_class, "Lunch Menu": color_class, "Custom Schedule": color_class, "Customize": color_class}
+          this.buttons_color = color_class
         } else {
           this.progress_color = this.presets[preset]["progress_color"]
-          this.button_colors = this.presets[preset]["button_colors"]
+          this.buttons_color = this.presets[preset]["buttons_color"]
         }
       },
       // Saves Custom Styles to Local Storage
@@ -334,6 +349,15 @@
         var customizations = {"information_bools": this.information_bools, "progress_color": this.progress_color, "button_colors": this.button_colors, "other_options": this.other_options}
         const parsed = JSON.stringify(customizations);
         localStorage.setItem('customizations', parsed);
+
+        var temp_activities_schedule = {}
+        for (const [name, start_end] of Object.entries(this.activities_schedule)) {
+          temp_activities_schedule[name] = [[start_end[0].getHours(), start_end[0].getMinutes()], [start_end[1].getHours(), start_end[1].getMinutes()]]
+        }
+        var activity_data = {"activities_bool": this.activities_bool, "activities_schedule": temp_activities_schedule, "activity_name": this.activity_name}
+        const parsed2 = JSON.stringify(activity_data);
+        localStorage.setItem("activity_data", parsed2)
+
         this.isCustomizeModalActive = false;
       },
       // Saves Custom Blocks to Local Storage
@@ -404,12 +428,14 @@
             return this.special_schedule[date]
           }
         }
+
         // Checks if it is an immersive
         if (this.time > this.immersives["Immersive1"][0] && this.time < this.immersives["Immersive1"][1]) {
           return this.immersives["Immersive1 Schedule"]
         } else if (this.time > this.immersives["Immersive2"][0] && this.time < this.immersives["Immersive2"][1]) {
           return this.immersives["Immersive2 Schedule"]
         }
+
         this.special_schedule_bool = false;
         if (this.activities_bool) {
           var temp_schedule = Object.values(this.schedule)[this.time.getDay() - 1]
@@ -443,6 +469,7 @@
       getProgress(block) {
         var block_length = parseInt((block[1] - block[0])/1000)/60
         var progress = parseInt((this.time - block[0])/1000)/60
+
         return Math.round(progress / block_length * 100)
       },
       // Returns First Period Given the Schedule for the Day
@@ -456,6 +483,8 @@
       // Returns "block"; Returns either the name of the current break, 'Weekend', 'School hasn't started', 'School is over', the amount of time left in the block, or 'Passing'
       getBlock() {
         var dayDict = this.day_dict
+        delete dayDict[this.activity_name]
+
         if (this.time < this.getFirstPeriod(dayDict))
         {
           return this.getTimeLeft(this.getFirstPeriod(dayDict) - this.time) + " until start"
@@ -504,6 +533,7 @@
             }
           }
         }
+
         if (localStorage.getItem('customizations')) {
           var custom_looks = JSON.parse(localStorage.getItem('customizations'));
           this.information_bools = custom_looks["information_bools"];
@@ -511,12 +541,14 @@
           this.button_colors = custom_looks["button_colors"];
           this.other_options = custom_looks["other_options"]
         }
+
         if (localStorage.getItem('activity_data')) {
           var activity_datum = JSON.parse(localStorage.getItem('activity_data'));
           this.activities_bool = activity_datum["activities_bool"];
           this.activities_schedule = activity_datum["activities_schedule"];
           this.activity_name = activity_datum["activity_name"];
         }
+
         for (const [name, start_end] of Object.entries(this.activities_schedule)) {
           this.activities_schedule[name] = [new Date(this.time.getFullYear(), this.time.getMonth(), this.time.getDate(), start_end[0][0], start_end[0][1]), new Date(this.time.getFullYear(), this.time.getMonth(), this.time.getDate(), start_end[1][0], start_end[1][1])]
         }
@@ -533,11 +565,14 @@
       this.schedule = this.loadSchedule(this.schedule)
       this.immersives = this.loadSchedule(this.immersives)
       this.special_schedule = this.loadSchedule(this.special_schedule)
+
       this.loadLocalStorage()
       this.start()
+
       // Set Menu Length
       const menu = require.context('@/data/menu')
       this.menu_length = menu.keys().length
+
       // Repeat Tick Function Every One Second
       setInterval(this.tick, 1000);
     }

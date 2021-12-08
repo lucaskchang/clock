@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "sass": "^1.42.1",
     "vue": "^2.6.11",
+    "vue-print-nb": "^1.7.5",
     "vue-router": "^3.5.3"
   },
   "devDependencies": {

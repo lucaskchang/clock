@@ -37,6 +37,7 @@
         </div>
       </div>
     </section>
+    <button v-print>Print local range</button>
   </div>
 </template>
 
