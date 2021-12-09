@@ -153,3 +153,16 @@ $colors: mergeColorMaps(
   padding-top: 1rem;
   padding-bottom: 0;
 }
+
+#snow {
+  background-image: url("../media/snow.gif");
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  pointer-events:none;
+}
