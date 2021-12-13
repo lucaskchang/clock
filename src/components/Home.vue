@@ -82,6 +82,7 @@
     </section>
 
     <div v-if="snow_bool" id="snow"></div>
+    <div class="snow-flake"></div>
 
     <!-- Lunch Menu Modal -->
     <b-modal v-model="isLunchModalActive">
@@ -166,10 +167,12 @@
               <div class="level-item">
                 <b-field label="Color">
                   <b-select placeholder="Select a color" v-model="progress_color">
-                    <option disabled>Default Colors:</option>
-                    <option v-for="(color, name) in bar_possible_colors" :value="color" :key="color"> {{ name }} </option>
-                    <option disabled>Olympic Team Colors:</option>
-                    <option v-for="(color, name) in olympic_teams" :value="color" :key="color"> {{ name.replace(/^\w/, (c) => c.toUpperCase()) }} </option>
+                    <optgroup label="Default Colors:">
+                      <option v-for="(color, name) in bar_possible_colors" :value="color" :key="color"> {{ name }} </option>
+                    </optgroup>
+                    <optgroup label="Olympic Team Colors:">
+                      <option v-for="(color, name) in olympic_teams" :value="color" :key="color"> {{ name.replace(/^\w/, (c) => c.toUpperCase()) }} </option>
+                    </optgroup>
                   </b-select>
                 </b-field>
               </div>
@@ -182,10 +185,12 @@
               <div v-for="(button_color, button_name) in button_colors" :key="button_color" class="level-item">
                 <b-field :label="button_name">
                   <b-select placeholder="Select a color" v-model="button_colors[button_name]">
-                    <option disabled>Default Colors:</option>
-                    <option v-for="(color, name) in btn_possible_colors" :value="color" :key="color"> {{ name }} </option>
-                    <option disabled>Olympic Team Colors:</option>
-                    <option v-for="(color, name) in olympic_teams" :value="color" :key="color"> {{ name.replace(/^\w/, (c) => c.toUpperCase()) }} </option>
+                    <optgroup label="Default Colors:">
+                      <option v-for="(color, name) in btn_possible_colors" :value="color" :key="color"> {{ name }} </option>
+                    </optgroup>
+                    <optgroup label="Olympic Team Colors:">
+                      <option v-for="(color, name) in olympic_teams" :value="color" :key="color"> {{ name.replace(/^\w/, (c) => c.toUpperCase()) }} </option>
+                    </optgroup>
                   </b-select>
                 </b-field>
               </div>
