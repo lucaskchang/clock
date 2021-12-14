@@ -82,7 +82,6 @@
     </section>
 
     <div v-if="snow_bool" id="snow"></div>
-    <div class="snow-flake"></div>
 
     <!-- Lunch Menu Modal -->
     <b-modal v-model="isLunchModalActive">
@@ -161,11 +160,11 @@
             </div>
           </nav>
 
-          <h4 class="subtitle is-4">Progress Bar</h4>
+          <h4 class="subtitle is-4">Colors</h4>
           <nav class="level">
             <div class="level-left">
               <div class="level-item">
-                <b-field label="Color">
+                <b-field label="Progress Bars">
                   <b-select placeholder="Select a color" v-model="progress_color">
                     <optgroup label="Default Colors:">
                       <option v-for="(color, name) in bar_possible_colors" :value="color" :key="color"> {{ name }} </option>
@@ -176,15 +175,9 @@
                   </b-select>
                 </b-field>
               </div>
-            </div>
-          </nav>
-
-          <h4 class="subtitle is-4">Buttons</h4>
-          <nav class="level">
-            <div class="level-left">
-              <div v-for="(button_color, button_name) in button_colors" :key="button_color" class="level-item">
-                <b-field :label="button_name">
-                  <b-select placeholder="Select a color" v-model="button_colors[button_name]">
+              <div class="level-item">
+                <b-field label="Buttons">
+                  <b-select placeholder="Select a color" v-model="buttons_color">
                     <optgroup label="Default Colors:">
                       <option v-for="(color, name) in btn_possible_colors" :value="color" :key="color"> {{ name }} </option>
                     </optgroup>
