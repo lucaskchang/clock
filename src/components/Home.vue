@@ -74,7 +74,7 @@
         <div class="level-right">
           <div class="level">
             <b-field>
-              <b-switch v-model="snow_bool">Toggle Snow</b-switch>
+              <b-switch v-model="snow_bool">Toggle Snow</b-switch><b-button tag="a" href="https://forms.gle/tzm7GVWyFZMyUNNH7" target="_blank">Survey</b-button>
             </b-field>
           </div>
         </div>
