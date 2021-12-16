@@ -72,9 +72,9 @@
           </div>
         </div>
         <div class="level-right">
-          <div class="level">
+          <div class="level-item">
             <b-field>
-              <b-switch v-model="snow_bool">Toggle Snow</b-switch><b-button tag="a" href="https://forms.gle/tzm7GVWyFZMyUNNH7" target="_blank">Survey</b-button>
+              <b-switch v-model="snow_bool">Toggle Snow</b-switch>
             </b-field>
           </div>
         </div>
@@ -289,7 +289,7 @@
     data() {
       return {
         //special vars:
-        snow_bool: true,
+        snow_bool: false,
 
         // Time Variable
         time: new Date(),
