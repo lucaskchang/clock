@@ -71,17 +71,8 @@
             <b-button label="Custom Styles" :type="buttons_color" @click="isCustomizeModalActive = true" rounded/>
           </div>
         </div>
-        <div class="level-right">
-          <div class="level-item">
-            <b-field>
-              <b-switch v-model="snow_bool">Toggle Snow</b-switch>
-            </b-field>
-          </div>
-        </div>
       </nav>
     </section>
-
-    <div v-if="snow_bool" id="snow"></div>
 
     <!-- Lunch Menu Modal -->
     <b-modal v-model="isLunchModalActive">
