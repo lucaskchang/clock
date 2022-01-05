@@ -64,11 +64,11 @@
           <div class="level-item">
             <b-button label="Lunch Menu" :type="buttons_color" @click="isLunchModalActive = true" rounded/>
           </div>
-          <div class="level-item">
+          <div v-if="!immersive_bool" class="level-item">
             <b-button label="Custom Schedule" :type="buttons_color" @click="isRescheduleModalActive = true" rounded/>
           </div>
           <div class="level-item">
-            <b-button label="Custom Styles" :type="buttons_color" @click="isCustomizeModalActive = true" rounded/>
+            <b-button label="Customize" :type="buttons_color" @click="isCustomizeModalActive = true" rounded/>
           </div>
         </div>
       </nav>
@@ -326,6 +326,7 @@
         special_schedule_bool: false,
         show_schedule: true,
         day_dict: {},
+        immersive_bool: false,
         block: ""
       }
     },
@@ -432,8 +433,10 @@
 
         // Checks if it is an immersive
         if (this.time > this.immersives["Immersive1"][0] && this.time < this.immersives["Immersive1"][1]) {
+          this.immersive_bool = true
           return this.immersives["Immersive1 Schedule"]
         } else if (this.time > this.immersives["Immersive2"][0] && this.time < this.immersives["Immersive2"][1]) {
+          this.immersive_bool = true
           return this.immersives["Immersive2 Schedule"]
         }
 
