@@ -74,6 +74,12 @@
       </nav>
     </section>
 
+    <div v-if="holiday_bool">
+      <div v-for="index in 50" :key="index" class="snowflake">
+        <img class="snowflake-image" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Ficons.iconarchive.com%2Ficons%2Fpaomedia%2Fsmall-n-flat%2F1024%2Fheart-icon.png&f=1&nofb=1">
+      </div>
+    </div>
+
     <!-- Lunch Menu Modal -->
     <b-modal v-model="isLunchModalActive">
       <p v-for="index in menu_length" :key="index" class="image">
@@ -249,18 +255,18 @@
       </div>
     </b-modal>
 
-    <b-modal v-model="isSantaModalActive">
+    <b-modal v-model="isEasterEggModalActive">
       <p class="image is-4by3">
-        <img :src="require('../media/santa.gif')">
+        <img :src="require('../media/valentines.gif')">
       </p>
     </b-modal>
 
     <!-- Footer -->
     <footer class="footer">
       <div class="content has-text-centered">
-        <p><a @click="isSantaModalActive = true" style="color:#4a4a4a">Coded</a> <router-link style="color:#4a4a4a" to="/letter">by</router-link> <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a></p>
+        <p>Coded by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a></p>
         <p>
-          <a href="https://github.com/FairfieldBW/clock" target="_blank">Github Repo</a> / 
+          <a href="https://github.com/FairfieldBW/clock" target="_blank">Source</a> / 
           <a @click="isCreditsModalActive = true">Credits</a> / 
           <a @click="bugReport()">Bug Report</a>
         </p>
@@ -280,7 +286,7 @@
     data() {
       return {
         //special vars:
-        snow_bool: false,
+        holiday_bool: false,
 
         // Time Variable
         time: new Date(),
@@ -298,7 +304,7 @@
         isLunchModalActive: false,
         isCreditsModalActive: false,
         isPagesModalActive: false,
-        isSantaModalActive: false,
+        isEasterEggModalActive: false,
 
         // Customizable Styles Variables
         information_bools: {"Clock": true, "Time Left": true, "Date": true, "Special Schedule Indicator": true},
@@ -525,6 +531,10 @@
         }
       },
       loadLocalStorage() {
+        if (localStorage.holiday_bool) {
+          this.holiday_bool = localStorage.holiday_bool;
+        }
+
         if (localStorage.getItem('blocks')) {
           this.blocks = JSON.parse(localStorage.getItem('blocks'));
           for (const block_name of Object.keys(this.blocks)) {
@@ -579,6 +589,11 @@
 
       // Repeat Tick Function Every One Second
       setInterval(this.tick, 1000);
+    },
+    watch: {
+      holiday_bool(new_holiday_bool) {
+        localStorage.holiday_bool = new_holiday_bool;
+      }
     }
   }
 </script>
