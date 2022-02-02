@@ -75,8 +75,8 @@
     </section>
 
     <div v-if="holiday_bool">
-      <div v-for="index in 50" :key="index" class="snowflake">
-        <img class="snowflake-image" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Ficons.iconarchive.com%2Ficons%2Fpaomedia%2Fsmall-n-flat%2F1024%2Fheart-icon.png&f=1&nofb=1">
+      <div v-for="index in 50" :key="index" class="holiday-icon">
+        <img class="holiday-icon-image" :src="require('../media/heart.png')">
       </div>
     </div>
 
@@ -532,7 +532,7 @@
       },
       loadLocalStorage() {
         if (localStorage.holiday_bool) {
-          this.holiday_bool = localStorage.holiday_bool;
+          this.holiday_bool = JSON.parse(localStorage.holiday_bool);
         }
 
         if (localStorage.getItem('blocks')) {
