@@ -71,12 +71,19 @@
             <b-button label="Customize" :type="buttons_color" @click="isCustomizeModalActive = true" rounded/>
           </div>
         </div>
+        <div class="level-right" v-if="is_holiday">
+          <div class="level-item">
+            <b-field>
+              <b-switch v-model="holiday_bool">{{ holiday_name }}</b-switch>
+            </b-field>
+          </div>
+        </div>
       </nav>
     </section>
 
-    <div v-if="holiday_bool">
+    <div v-if="holiday_bool && is_holiday">
       <div v-for="index in 50" :key="index" class="holiday-icon">
-        <img class="holiday-icon-image" :src="require('../media/heart.png')">
+        <img class="holiday-icon-image" :src="require('../media/' + holiday_icons[index - 1])">
       </div>
     </div>
 
@@ -264,7 +271,7 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="content has-text-centered">
-        <p>Coded by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a></p>
+        <p>Coded by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a><a @click="isEasterEggModalActive = true" style="color:#4a4a4a">💕</a></p>
         <p>
           <a href="https://github.com/FairfieldBW/clock" target="_blank">Source</a> / 
           <a @click="isCreditsModalActive = true">Credits</a> / 
@@ -279,15 +286,13 @@
   import scheduleData from "../data/schedule.json";
   import specialScheduleData from "../data/special_schedule.json";
   import immersivesData from "../data/immersives.json";
-  import breaksData from "../data/breaks.json"
+  import breaksData from "../data/breaks.json";
   import presetsData from "../data/presets.json";
+  import holidayData from "../data/holidays.json";
 
   export default {
     data() {
       return {
-        //special vars:
-        holiday_bool: false,
-
         // Time Variable
         time: new Date(),
 
@@ -297,6 +302,7 @@
         immersives: immersivesData,
         breaks: breaksData,
         presets: presetsData,
+        holidays: holidayData,
 
         // Modal Bools
         isCustomizeModalActive: false,
@@ -328,6 +334,10 @@
         activities_tabs: 0,
 
         // Other Variables
+        holiday_bool: false,
+        is_holiday: false,
+        holiday_name: "",
+        holiday_icons: [],
         menu_length: 0,
         special_schedule_bool: false,
         show_schedule: true,
@@ -514,6 +524,17 @@
       },
       // Set the dictionary for the day and whether or not to show the schedule
       start() {
+        for (const [name, data] of Object.entries(this.holidays)) {
+          var holiday_start = new Date(this.time.getFullYear() + "/" + data["Start"]);
+          var holiday_end = new Date(this.time.getFullYear() + "/" + data["End"]);
+          if (this.time > holiday_start && this.time < holiday_end) {
+            this.is_holiday = true;
+            this.holiday_name = name;
+            for (let i=1; i<=50; i++) {
+              this.holiday_icons.push(data['icons'][Math.floor(Math.random() * data['icons'].length)])
+            }
+          }
+        }
         for (const [name, start_end] of Object.entries(this.breaks)) {
           var break_start = new Date(start_end[0]);
           var break_end = new Date(start_end[1]);
@@ -521,7 +542,7 @@
             this.show_schedule = false;
             this.block = name;
             return
-            }
+          }
         }
         if (this.time.getDay() == 0 || this.time.getDay() == 6) {
           this.show_schedule = false;
