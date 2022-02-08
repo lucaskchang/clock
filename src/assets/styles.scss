@@ -159,7 +159,7 @@ $colors: mergeColorMaps(
 }
 
 .holiday-icon {
-  --size: 1vw;
+  --size: 1rem;
   width: var(--size);
   height: var(--size);
   position: absolute;
@@ -183,7 +183,7 @@ $colors: mergeColorMaps(
 
 @for $i from 1 through 50 {
   .holiday-icon:nth-child(#{$i}) {
-    --size: #{random(3) + 1}vw;
+    --size: #{random(3) + 2}rem;
     --left-ini: #{random(20) - 10}vw;
     --left-end: #{random(20) - 10}vw;
     left: #{random(100)}vw;
