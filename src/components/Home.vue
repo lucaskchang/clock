@@ -271,7 +271,7 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="content has-text-centered">
-        <p>Coded by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a><a @click="isEasterEggModalActive = true" style="color:#4a4a4a">💕</a></p>
+        <p>Coded by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a><a @click="isEasterEggModalActive = true" style="color:#4a4a4a"></a></p>
         <p>
           <a href="https://github.com/FairfieldBW/clock" target="_blank">Source</a> / 
           <a @click="isCreditsModalActive = true">Credits</a> / 
