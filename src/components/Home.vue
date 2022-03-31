@@ -289,13 +289,11 @@
   import breaksData from "../data/breaks.json";
   import presetsData from "../data/presets.json";
   import holidayData from "../data/holidays.json";
-
   export default {
     data() {
       return {
         // Time Variable
         time: new Date(),
-
         // JSON Data
         schedule: scheduleData,
         special_schedule: specialScheduleData,
@@ -303,7 +301,6 @@
         breaks: breaksData,
         presets: presetsData,
         holidays: holidayData,
-
         // Modal Bools
         isCustomizeModalActive: false,
         isRescheduleModalActive: false,
@@ -311,7 +308,6 @@
         isCreditsModalActive: false,
         isPagesModalActive: false,
         isEasterEggModalActive: false,
-
         // Customizable Styles Variables
         information_bools: {"Clock": true, "Time Left": true, "Date": true, "Special Schedule Indicator": true},
         other_options: {"Detailed Time Left": false},
@@ -323,16 +319,13 @@
         progress_color: "is-primary",
         preset: "",
         customize_tabs: 0,
-
         color_guide: {"A": "is-jude-green", "B": "is-primary", "C": "is-jude-yellow", "D": "is-jude-red", "E": "is-jude-pink", "F": "is-jude-orange"},
-
         // Activities Variables
         activities_bool: true,
         activities_schedule: {"Monday": [[15, 45], [17, 0]], "Tuesday": [[15, 45], [17, 0]], "Wednesday": [[15, 45], [17, 0]], "Thursday": [[14, 35], [16, 0]], "Friday": [[14, 35], [16, 0]]},
         
         activity_name: "Activities + Sports/Drama Block",
         activities_tabs: 0,
-
         // Other Variables
         holiday_bool: false,
         is_holiday: false,
@@ -367,7 +360,6 @@
         var customizations = {"information_bools": this.information_bools, "progress_color": this.progress_color, "button_colors": this.button_colors, "other_options": this.other_options}
         const parsed = JSON.stringify(customizations);
         localStorage.setItem('customizations', parsed);
-
         var temp_activities_schedule = {}
         for (const [name, start_end] of Object.entries(this.activities_schedule)) {
           temp_activities_schedule[name] = [[start_end[0].getHours(), start_end[0].getMinutes()], [start_end[1].getHours(), start_end[1].getMinutes()]]
@@ -375,7 +367,6 @@
         var activity_data = {"activities_bool": this.activities_bool, "activities_schedule": temp_activities_schedule, "activity_name": this.activity_name}
         const parsed2 = JSON.stringify(activity_data);
         localStorage.setItem("activity_data", parsed2)
-
         this.isCustomizeModalActive = false;
       },
       // Saves Custom Blocks to Local Storage
@@ -446,7 +437,6 @@
             return this.special_schedule[date]
           }
         }
-
         // Checks if it is an immersive
         if (this.time > this.immersives["Immersive1"][0] && this.time < this.immersives["Immersive1"][1]) {
           this.immersive_bool = true
@@ -455,7 +445,6 @@
           this.immersive_bool = true
           return this.immersives["Immersive2 Schedule"]
         }
-
         this.special_schedule_bool = false;
         if (this.activities_bool) {
           var temp_schedule = Object.values(this.schedule)[this.time.getDay() - 1]
@@ -489,7 +478,6 @@
       getProgress(block) {
         var block_length = parseInt((block[1] - block[0])/1000)/60
         var progress = parseInt((this.time - block[0])/1000)/60
-
         return Math.round(progress / block_length * 100)
       },
       // Returns First Period Given the Schedule for the Day
@@ -504,7 +492,6 @@
       getBlock() {
         var dayDict = this.day_dict
         delete dayDict[this.activity_name]
-
         if (this.time < this.getFirstPeriod(dayDict))
         {
           return this.getTimeLeft(this.getFirstPeriod(dayDict) - this.time) + " until start"
@@ -555,7 +542,6 @@
         if (localStorage.holiday_bool) {
           this.holiday_bool = JSON.parse(localStorage.holiday_bool);
         }
-
         if (localStorage.getItem('blocks')) {
           this.blocks = JSON.parse(localStorage.getItem('blocks'));
           for (const block_name of Object.keys(this.blocks)) {
@@ -568,7 +554,6 @@
             }
           }
         }
-
         if (localStorage.getItem('customizations')) {
           var custom_looks = JSON.parse(localStorage.getItem('customizations'));
           this.information_bools = custom_looks["information_bools"];
@@ -576,14 +561,12 @@
           this.button_colors = custom_looks["button_colors"];
           this.other_options = custom_looks["other_options"]
         }
-
         if (localStorage.getItem('activity_data')) {
           var activity_datum = JSON.parse(localStorage.getItem('activity_data'));
           this.activities_bool = activity_datum["activities_bool"];
           this.activities_schedule = activity_datum["activities_schedule"];
           this.activity_name = activity_datum["activity_name"];
         }
-
         for (const [name, start_end] of Object.entries(this.activities_schedule)) {
           this.activities_schedule[name] = [new Date(this.time.getFullYear(), this.time.getMonth(), this.time.getDate(), start_end[0][0], start_end[0][1]), new Date(this.time.getFullYear(), this.time.getMonth(), this.time.getDate(), start_end[1][0], start_end[1][1])]
         }
@@ -600,14 +583,11 @@
       this.schedule = this.loadSchedule(this.schedule)
       this.immersives = this.loadSchedule(this.immersives)
       this.special_schedule = this.loadSchedule(this.special_schedule)
-
       this.loadLocalStorage()
       this.start()
-
       // Set Menu Length
       const menu = require.context('@/data/menu')
       this.menu_length = menu.keys().length
-
       // Repeat Tick Function Every One Second
       setInterval(this.tick, 1000);
     },
