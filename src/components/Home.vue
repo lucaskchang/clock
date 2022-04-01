@@ -17,7 +17,7 @@
     <section class="section" id="mid-bar">
       <nav class="level">
         <div class="level-left" v-if="information_bools['Date']">
-          <h2 class="subtitle is-3 subtext" id="date">{{ time.toDateString() }}</h2>
+          <h2 class="subtitle is-3 subtext" id="date">A Normal Day in April</h2>
         </div>
         <div class="level-right" v-if="special_schedule_bool && information_bools['Special Schedule Indicator']">
           <h2 class="subtitle is-3 subtext" id="date">SPECIAL SCHEDULE</h2>
