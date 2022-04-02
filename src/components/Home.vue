@@ -17,7 +17,7 @@
     <section class="section" id="mid-bar">
       <nav class="level">
         <div class="level-left" v-if="information_bools['Date']">
-          <h2 class="subtitle is-3 subtext" id="date">A Normal Day in April</h2>
+          <h2 class="subtitle is-3 subtext" id="date">{{ time.toDateString() }}</h2>
         </div>
         <div class="level-right" v-if="special_schedule_bool && information_bools['Special Schedule Indicator']">
           <h2 class="subtitle is-3 subtext" id="date">SPECIAL SCHEDULE</h2>
@@ -81,10 +81,9 @@
       </nav>
     </section>
 
-    <!-- april fools -->
-    <div v-if="april_fools_bool">
+    <div v-if="holiday_bool && is_holiday">
       <div v-for="index in 50" :key="index" class="holiday-icon">
-        <img class="holiday-icon-image" :src="require('../media/super.gif')">
+        <img class="holiday-icon-image" :src="require('../media/' + holiday_icons[index - 1])">
       </div>
     </div>
 
@@ -272,7 +271,7 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="content has-text-centered">
-        <p>Coded by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a><a @click="april_fools_bool = !april_fools_bool">😏</a><a @click="isEasterEggModalActive = true" style="color:#4a4a4a"></a></p>
+        <p>Coded by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a><a @click="isEasterEggModalActive = true" style="color:#4a4a4a"></a></p>
         <p>
           <a href="https://github.com/FairfieldBW/clock" target="_blank">Source</a> / 
           <a @click="isCreditsModalActive = true">Credits</a> / 
@@ -344,10 +343,7 @@
         show_schedule: true,
         day_dict: {},
         immersive_bool: false,
-        block: "",
-
-        // april fools
-        april_fools_bool: false,
+        block: ""
       }
     },
     methods: {
@@ -415,9 +411,8 @@
             block[1] = new Date(block[1]);
           } else {
             for (const start_end of Object.values(block)) {
-              // april fools
-              start_end[0] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), Math.floor(Math.random() * 24) + 1, Math.floor(Math.random() * 61))
-              start_end[1] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), Math.floor(Math.random() * 24) + 1, Math.floor(Math.random() * 61))
+              start_end[0] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), start_end[0][0], start_end[0][1])
+              start_end[1] = new Date(now.getFullYear(), now.getMonth(), now.getDate(), start_end[1][0], start_end[1][1])
             }
           }
         }
@@ -441,18 +436,6 @@
         }
         return output
       },
-      // randomize object
-      shuffle(object) {
-        var keys = Object.keys(object);
-        var shuffled = {};
-        for (var i = keys.length - 1; i >= 0; i--) {
-          var randomIndex = Math.floor(Math.random() * (i + 1));
-          var randomKey = keys[randomIndex];
-          shuffled[randomKey] = object[randomKey];
-          keys[randomIndex] = keys[i];
-        }
-        return shuffled;
-      },
       // Returns the schedule dictionary for the current day
       getDayDict() {
         // Checks for special schedule
@@ -474,21 +457,17 @@
         }
 
         this.special_schedule_bool = false;
-        // april fools
-        /*
         if (this.activities_bool) {
           var temp_schedule = Object.values(this.schedule)[this.time.getDay() - 1]
           temp_schedule["Activities + Sports/Drama Block"] = Object.values(this.activities_schedule)[this.time.getDay() - 1]
           return temp_schedule
         }
-        */
-        console.log(typeof Object.values(this.schedule)[this.time.getDay() - 1])
-        return this.shuffle(Object.values(this.schedule)[this.time.getDay() - 1])
+        return Object.values(this.schedule)[this.time.getDay() - 1]
       },
       // Turns date object into time formatted in the HH:MM:SS format with optional meridiem
       getTimeString(time, meridiem_bool, hours=true, minutes=true, seconds=true) {
         var output = ""
-        let hour = time.getHours() - 1;
+        let hour = time.getHours();
         let minute = time.getMinutes();
         let second = time.getSeconds();
         var meridiem = "AM";
