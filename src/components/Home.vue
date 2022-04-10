@@ -431,7 +431,7 @@
           secs = secs < 10 ? "0" + secs : secs;
           output += mins + ":" + secs
         } else {
-          mins = Math.floor(time/60000)
+          mins = Math.floor(time/60000) + 1
           output += mins + " minutes"
         }
         return output
