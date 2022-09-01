@@ -49,16 +49,18 @@
             <b-dropdown aria-role="list">
               <template #trigger="{ active }">
                 <b-button
-                  label="Useful Links"
                   :type="buttons_color"
                   :icon-right="active ? 'menu-up' : 'menu-down'" 
                   rounded
-                  />
+                  > 
+                    Useful Links <b-tag class="is-3" type="is-info">New!</b-tag>
+                  </b-button>
               </template>
 
               <b-dropdown-item has-link aria-role="listitem"><a href="https://www.bayschoolsf.org/" target="_blank">Bay Site</a></b-dropdown-item>
               <b-dropdown-item has-link aria-role="listitem"><a href="https://bayschoolsf.instructure.com/" target="_blank">Canvas</a></b-dropdown-item>
               <b-dropdown-item has-link aria-role="listitem"><a href="https://bayschoolsf.myschoolapp.com/" target="_blank">My Bay</a></b-dropdown-item>
+              <b-dropdown-item has-link aria-role="listitem"><a href="https://docs.google.com/document/d/1c5YzT06GTn5CdX_7X7jZ2Ghhd5pK1aHhRRbOY78cr2M/" target="_blank">Announcement Digest <b-tag class="is-3" type="is-info">New!</b-tag></a></b-dropdown-item>
             </b-dropdown>
           </div>
           <div class="level-item">
