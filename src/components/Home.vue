@@ -52,7 +52,8 @@
                   :type="buttons_color"
                   :icon-right="active ? 'menu-up' : 'menu-down'" 
                   rounded
-                  > 
+                  >
+                  Useful Links
                   </b-button>
               </template>
 
