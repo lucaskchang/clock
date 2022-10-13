@@ -80,6 +80,9 @@
               <b-switch v-model="holiday_bool">{{ holiday_name }}</b-switch>
             </b-field>
           </div>
+          <div class="level-item">
+            <b-button label="?" type="is-primary" @click="isEasterEggModalActive = true" rounded/>
+          </div>
         </div>
       </nav>
     </section>
@@ -266,9 +269,26 @@
     </b-modal>
 
     <b-modal v-model="isEasterEggModalActive">
-      <p class="image is-4by3">
-        <img :src="require('../media/valentines.gif')">
-      </p>
+      <div class="modal-card" style="width: auto">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Anniversary Fun Facts</p>
+          <button type="button" class="delete" @click="isEasterEggModalActive = false"/>
+        </header>
+        <section class="modal-card-body">
+          <p>- Bay Clock has been visited over 86,000 times.</p>
+          <p>- The number of average users per day is 300.</p>
+          <p>- Bay Clock has been visited from over 30 countries including Belarus, the Bahamas, Denmark, Cambodia, France and Vietnam.</p>
+          <img :src="require('../media/countries.jpg')" width="60%"/>
+          <p>- Bay Clock has been visited from over 600 cities. (The top 5 are San Francisco, Livermore, San Jose, Los Angeles, and Washington).</p>
+          <p>- The most common screen resolution for a device that viewed Bay Clock is 1440x900 (The screen size of the MacBook Air), but there are apparently people who have viewed it on a 1728x1117, a 331x593, a 1517x853, and a 378x543 screen.</p>
+          <p>- Around 68% of visits are from a desktop and visits from a desktop are 19 times longer than those from a phone on average.</p>
+          <p>- 4 people running Chrome OS have visited the site.</p>
+          <p>- 70% of visits have been on Google Chrome, 28% on Safari🤢, 0.4% on Microsoft Edge🤮, and 1 visit from Opera.</p>
+        </section>
+        <footer class="modal-card-foot">
+          <b-button label="Close" @click="isEasterEggModalActive = false"/>
+        </footer>
+      </div>
     </b-modal>
 
     <!-- Footer -->

@@ -1,3 +1,4 @@
 {
-	"Valentine's Hearts": {"Start": "2/6", "End": "2/20", "icons": ["heart.png"]}
+	"Valentine's Hearts": {"Start": "2/6", "End": "2/20", "icons": ["heart.png"]},
+	"Anniversary Balloons": {"Start": "10/12", "End": "10/13", "icons": ["balloon_1.png", "balloon_2.png", "balloon_3.png", "balloon_4.png", "balloon_5.png", "balloon_6.png"]}
 }
