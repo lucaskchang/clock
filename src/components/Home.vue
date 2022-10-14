@@ -80,9 +80,6 @@
               <b-switch v-model="holiday_bool">{{ holiday_name }}</b-switch>
             </b-field>
           </div>
-          <div class="level-item">
-            <b-button label="?" type="is-primary" @click="isEasterEggModalActive = true" rounded/>
-          </div>
         </div>
       </nav>
     </section>
