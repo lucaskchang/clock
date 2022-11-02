@@ -309,10 +309,10 @@
   import immersivesData from "../data/immersives.json";
   import breaksData from "../data/breaks.json";
 
-  //import scheduleData from "https://github.com/BaySchoolMARMOTS/Bay-Clock-Data/blob/main/schedule.json";
-  //import specialScheduleData from "https://github.com/BaySchoolMARMOTS/Bay-Clock-Data/blob/main/special_schedule.json";
-  //import immersivesData from "https://github.com/BaySchoolMARMOTS/Bay-Clock-Data/blob/main/immersives.json";
-  //import breaksData from "https://github.com/BaySchoolMARMOTS/Bay-Clock-Data/blob/main/data/breaks.json";
+  //import scheduleData from "https://BaySchoolMARMOTS.github.io/schedule.json";
+  //import specialScheduleData from "https://BaySchoolMARMOTS.github.io/special_schedule.json";
+  //import immersivesData from "https://BaySchoolMARMOTS.github.io/immersives.json";
+  //import breaksData from "https://BaySchoolMARMOTS.github.io/breaks.json";
 
   import presetsData from "../data/presets.json";
   import holidayData from "../data/holidays.json";
