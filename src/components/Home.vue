@@ -309,6 +309,9 @@
   import immersivesData from "../data/immersives.json";
   import breaksData from "../data/breaks.json";
 
+  //comment the imports above and uncomment these ones below to enable automated updating
+  //go to https://BaySchoolMARMOTS.github.io/schedule_update.html and follow the instructions there to automatically format the schedule for the entire year
+
   //import scheduleData from "https://BaySchoolMARMOTS.github.io/schedule.json";
   //import specialScheduleData from "https://BaySchoolMARMOTS.github.io/special_schedule.json";
   //import immersivesData from "https://BaySchoolMARMOTS.github.io/immersives.json";

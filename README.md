@@ -1,6 +1,6 @@
 # Bay Clock
 
-Bay Clock is a website that shows the current schedule and block for the Bay School of San Francisco. 
+Bay Clock is a website that shows the current schedule and block for the Bay School of San Francisco.
 
 View it Here: [https://www.bayclock.org/](https://www.bayclock.org/)
 
@@ -17,34 +17,45 @@ View it Here: [https://www.bayclock.org/](https://www.bayclock.org/)
 
 ## Maintaining
 
-### Updating the Schedule:
+
+## Automated Schedule Updating
+
+To enable automated updating, go to `/src/components/Home.vue` and comment the import statements
+in lines 307-310, while uncommenting those in 315-318. The wizard at https://BaySchoolMARMOTS.github.io/schedule_update.html uses your student calendar to automatically format the entire year's schedule.
+This process will need to be performed at the beginning of each school year (preferably before school
+starts), as well as whenever the school decides that they need to change any of the blocks or schedules.  Automatic updating will require an Github API token; speak to Tate Rowney or a member of the IT Department to access this token.
+If this is enabled, the instructions under "Manually Updating the Schedule", "Adding a Special Schedule", "Editing Immersives", and "Adding/Editing Breaks" are not necessary. You will still have to update the lunch menu manually. However, if you want to manually update the schedule while automatic updating is on, go to the repo where the code for this feature is stored (https://github.com/BaySchoolMARMOTS/BaySchoolMARMOTS.github.io) and modify the json files there.
+This feature was made by taterowney@gmail.com btw
+
+
+### Manually Updating the Schedule:
 In order to update the schedule you must edit the `schedule.json` file located in the `data` folder. The `schedule.json` file is formatted into a dictionary with weekdays as the keys, and the corresponding schedule as the value. The schedule dictionary has the block name as the keys and a list containg two more lists for the start and finish of each block as the value.
 
 Here is the current schedule for Monday as an example:
 ````json
 "Monday": {
 	"Morning Meeting": [
-		[8, 30], 
+		[8, 30],
 		[8, 50]
 	],
 	"A": [
-		[8, 55], 
+		[8, 55],
 		[10, 10]
 	],
 	"B": [
-		[10, 15], 
+		[10, 15],
 		[11, 30]
 	],
 	"Lunch": [
-		[11, 30], 
+		[11, 30],
 		[12, 30]
 	],
 	"C": [
-		[12, 30], 
+		[12, 30],
 		[13, 45]
 	],
 	"D": [
-		[13, 50], 
+		[13, 50],
 		[15, 5]
 	],
 	"Tutorial": [
@@ -60,28 +71,28 @@ Here is an example special schedule entry:
 ```json
 "2021/09/30": {
 	"Group Advisory/1-on-1s": [
-		[8, 30], 
+		[8, 30],
 		[8, 50]
 	],
 	"A": [
-		[8, 55], 
+		[8, 55],
 		[10, 10]
 	],
 	"B": [
-		[10, 15], 
+		[10, 15],
 		[11, 30]
 	],
 	"Lunch": [
-		[11, 30], 
+		[11, 30],
 		[12, 30]
 	],
 	"Field Day": [
-		[12, 30], 
+		[12, 30],
 		[14, 50]
 	]
 },
 ```
-### Editing Immersives 
+### Editing Immersives
 In order to update when immersives start and end and the immersive schedule you must edit the `immersives.json` file located in the `data` folder. The starting and ending dates of the immersives are located in a list with the immersive number as the key. The immersive schedule is located in a dictionary with the immersive number plus the word 'schedule' as the key
 
 Here is an example of the starting and ending dates for an immersive:
@@ -92,7 +103,7 @@ Here is an example of an immersive schedule:
 ```json
 "Immersive1 Schedule": {
 	"Immersive 1": [
-		[9, 0], 
+		[9, 0],
 		[15, 0]
 	]
 },
