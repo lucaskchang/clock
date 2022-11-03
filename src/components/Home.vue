@@ -50,7 +50,7 @@
               <template #trigger="{ active }">
                 <b-button
                   :type="buttons_color"
-                  :icon-right="active ? 'menu-up' : 'menu-down'" 
+                  :icon-right="active ? 'menu-up' : 'menu-down'"
                   rounded
                   >
                   Useful Links
@@ -293,8 +293,8 @@
       <div class="content has-text-centered">
         <p>Coded by <a href="https://lucaskchang.com/" target="_blank">Lucas Chang</a><a @click="isEasterEggModalActive = true" style="color:#4a4a4a"></a></p>
         <p>
-          <a href="https://github.com/FairfieldBW/clock" target="_blank">Source</a> / 
-          <a @click="isCreditsModalActive = true">Credits</a> / 
+          <a href="https://github.com/FairfieldBW/clock" target="_blank">Source</a> /
+          <a @click="isCreditsModalActive = true">Credits</a> /
           <a @click="bugReport()">Bug Report</a>
         </p>
       </div>
@@ -303,10 +303,20 @@
 </template>
 
 <script type="text/javascript">
+
   import scheduleData from "../data/schedule.json";
   import specialScheduleData from "../data/special_schedule.json";
   import immersivesData from "../data/immersives.json";
   import breaksData from "../data/breaks.json";
+
+  //comment the imports above and uncomment these ones below to enable automated updating
+  //go to https://BaySchoolMARMOTS.github.io/schedule_update.html and follow the instructions there to automatically format the schedule for the entire year
+
+  //import scheduleData from "https://BaySchoolMARMOTS.github.io/schedule.json";
+  //import specialScheduleData from "https://BaySchoolMARMOTS.github.io/special_schedule.json";
+  //import immersivesData from "https://BaySchoolMARMOTS.github.io/immersives.json";
+  //import breaksData from "https://BaySchoolMARMOTS.github.io/breaks.json";
+
   import presetsData from "../data/presets.json";
   import holidayData from "../data/holidays.json";
 
@@ -349,7 +359,7 @@
         // Activities Variables
         activities_bool: true,
         activities_schedule: {"Monday": [[15, 45], [17, 0]], "Tuesday": [[15, 45], [17, 0]], "Wednesday": [[15, 45], [17, 0]], "Thursday": [[14, 35], [16, 0]], "Friday": [[14, 35], [16, 0]]},
-        
+
         activity_name: "Activities + Sports/Drama Block",
         activities_tabs: 0,
 
