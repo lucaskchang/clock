@@ -1,5 +1,6 @@
 {
 	"Valentine's Hearts": {"Start": "2/6", "End": "2/20", "icons": ["heart.png"]},
 	"Anniversary Balloons": {"Start": "10/13", "End": "10/14", "icons": ["balloon_1.png", "balloon_2.png", "balloon_3.png", "balloon_4.png", "balloon_5.png", "balloon_6.png"]},
-	"Halloween": {"Start": "10/23", "End": "11/1", "icons": ["candy1.png", "candy2.png", "candy3.png", "ghost.png", "pumpkin.png", "witch.png", "bat.png", "candy4.png", "skeleton.png"]}
+	"Halloween": {"Start": "10/23", "End": "11/1", "icons": ["candy1.png", "candy2.png", "candy3.png", "ghost.png", "pumpkin.png", "witch.png", "bat.png", "candy4.png", "skeleton.png"]},
+	"Holiday Snow": {"Start": "12/4", "End": "12/17", "icons": ["snow.png"]}
 }
