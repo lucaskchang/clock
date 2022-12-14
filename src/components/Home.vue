@@ -62,7 +62,7 @@
               <b-dropdown-item has-link aria-role="listitem"><a href="https://bayschoolsf.myschoolapp.com/" target="_blank">My Bay</a></b-dropdown-item>
               <b-dropdown-item has-link aria-role="listitem"><a href="https://docs.google.com/document/d/1c5YzT06GTn5CdX_7X7jZ2Ghhd5pK1aHhRRbOY78cr2M/" target="_blank">Announcement Digest</a></b-dropdown-item>
               <b-dropdown-item has-link aria-role="listitem"><a href="https://www.google.com/maps/d/edit?mid=1tBNv0IhwXTfDMeIaAX3SkCWVZGjSq5w" target="_blank">Bay Map</a></b-dropdown-item>
-              <b-dropdown-item has-link aria-role="listitem"><a href="https://drive.google.com/file/d/14tPDfBPmy22mf8VZRQwyPpqye04T-n3t/view?usp=sharing" target="_blank">Bay Riptide</a></b-dropdown-item>
+              <b-dropdown-item has-link aria-role="listitem"><a href="https://sites.google.com/bayschoolsf.org/the-bay-riptide/home" target="_blank">Bay Riptide</a></b-dropdown-item>
             </b-dropdown>
           </div>
           <div class="level-item">
