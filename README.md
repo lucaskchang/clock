@@ -1,3 +1,5 @@
+# No longer being updated. See: https://github.com/lukajaa/bay-clock-2
+
 # Bay Clock
 
 Bay Clock is a website that shows the current schedule and block for the Bay School of San Francisco.
