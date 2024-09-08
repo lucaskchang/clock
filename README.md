@@ -1,4 +1,4 @@
-# No longer being updated. See: https://github.com/lukajaa/bay-clock-2
+# No longer being updated. See: [https://github.com/lucaskchang/bay-clock-3](https://github.com/lucaskchang/bay-clock-3)
 
 # Bay Clock
 
