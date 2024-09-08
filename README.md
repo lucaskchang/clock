@@ -1,6 +1,5 @@
 # No longer being updated. See: [https://github.com/lucaskchang/bay-clock-3](https://github.com/lucaskchang/bay-clock-3)
-~~
-# Bay Clock
+~~Bay Clock
 
 Bay Clock is a website that shows the current schedule and block for the Bay School of San Francisco.
 
@@ -118,5 +117,4 @@ Here is an example break entry:
 "S1 Midterm Break": ["2021/10/16", "2021/10/24"]
 ```
 ### Updating the Lunch Menu:
-In order to update the lunch menu you must replace the files in the `data/menu` folder. The images must be in .jpg format and should be named `1.jpg`, `2.jpg`, etc.
-~~
+In order to update the lunch menu you must replace the files in the `data/menu` folder. The images must be in .jpg format and should be named `1.jpg`, `2.jpg`, etc.~~
